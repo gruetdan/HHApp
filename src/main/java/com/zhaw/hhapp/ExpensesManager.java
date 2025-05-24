@@ -1,6 +1,5 @@
 package com.zhaw.hhapp;
 
-import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,21 +17,14 @@ public class ExpensesManager  {
      * Speichert unterschiedliche Expense-List
      * @param expenseLists Enthält unterschiedliche ExpenseList (z. B. Haushalt, Griechenland-Ferien, ...)
      */
-    private ExpensesList expensesList;
+    public static ExpensesList expensesList = new ExpensesList();;
 
-    public ExpensesManager() {
-        this.expensesList = new ExpensesList();
-    }
 
-    public ExpensesList getExpensesList() {
+    public static ExpensesList getExpensesList() {
         return expensesList;
     }
 
-    public void setExpensesList(ExpensesList expensesList) {
-        this.expensesList = expensesList;
-    }
-
-    public void addExpenseList(String id) {
+    public static void addExpenseList(String id) {
         expensesList.addExpenseList(id);
         System.out.println("ExpensesList was added - msg by ExpensesManager");
     }

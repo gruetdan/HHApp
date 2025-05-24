@@ -26,6 +26,7 @@ public class ExpensesController {
     void addExpenseList(ActionEvent event) {
         System.out.println("AddExpenseListButton clicked");
         String expenseListID = ExpenseListTextField.getText(); // todo:
+        ExpensesManager.addExpenseList(expenseListID);
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/zhaw/hhapp/ExpenseView.fxml"));
         Scene scene = null;
         try {
@@ -35,7 +36,7 @@ public class ExpensesController {
             throw new RuntimeException(e);
         }
         Stage stage = new Stage();
-        stage.setTitle("HH-App-Structure-test!");
+        stage.setTitle(expenseListID);
         stage.setScene(scene);
         stage.show();
     }
