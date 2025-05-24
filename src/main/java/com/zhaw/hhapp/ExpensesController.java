@@ -24,20 +24,9 @@ public class ExpensesController {
 
     @FXML
     void addExpenseList(ActionEvent event) {
+        //String expenseListID = ExpenseListTextField.getText(); // todo:
+        new ExpenseManager(ExpenseListTextField.getText());
         System.out.println("AddExpenseListButton clicked");
-        String expenseListID = ExpenseListTextField.getText(); // todo:
-        ExpensesManager.addExpenseList(expenseListID);
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/zhaw/hhapp/ExpenseView.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 320, 240);
-        } catch (
-                IOException e) {
-            throw new RuntimeException(e);
-        }
-        Stage stage = new Stage();
-        stage.setTitle(expenseListID);
-        stage.setScene(scene);
-        stage.show();
+
     }
 }

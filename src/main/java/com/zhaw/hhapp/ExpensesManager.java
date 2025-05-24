@@ -19,7 +19,6 @@ public class ExpensesManager  {
      */
     public static ExpensesList expensesList = new ExpensesList();;
 
-
     public static ExpensesList getExpensesList() {
         return expensesList;
     }

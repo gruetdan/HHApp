@@ -22,6 +22,6 @@ public class ExpensesList {
     }
 
     public void addExpenseList(String expenseListID) {
-        expensesList.put(expenseListID, null);
+        expensesList.put(expenseListID, new ExpenseList());
     }
 }
