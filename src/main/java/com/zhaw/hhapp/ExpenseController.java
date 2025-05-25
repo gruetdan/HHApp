@@ -1,21 +1,16 @@
 package com.zhaw.hhapp;
 
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static java.lang.Double.parseDouble;
@@ -64,10 +59,9 @@ public class ExpenseController {
             Stage stage = (Stage) exportToTXT.getScene().getWindow();
             String title = stage.getTitle();
             Expense expense = new Expense(amount, description, date, user);
-            ExpenseList expenseList = new ExpenseList();
-            expenseList = ExpensesManager.getExpenseList(title);
+            ExpenseList expenseList = ExpensesManager.getExpenseList(title);
             expenseList.addExpense(expense);
-            ExpensesManager.overwriteexpenseListValue(title, expenseList);
+            ExpensesManager.overwriteExpenseListValue(title, expenseList);
             updateExpenseListView(expenseList);
             // Felder leeren bzw. neu initialisieren
             amountField.clear();
@@ -93,24 +87,28 @@ public class ExpenseController {
 
 
     @FXML
-    void exportToTxt(MouseEvent event) {
+    //void exportToTxt(MouseEvent event) {
+    void exportToTxt() {
         Stage stage = (Stage) exportToTXT.getScene().getWindow();
         String title = stage.getTitle();
         ExpenseExport.exportExpenses(title, ExpensesManager.getExpenseList(title).getExpenses());
     }
 
 
+
+//
+//    @FXML
+//    void importExpenses(MouseEvent event) {
     @FXML
-    void importExpenses(MouseEvent event) {
+    void importExpenses() {
 
         try {
             Stage stage = (Stage) exportToTXT.getScene().getWindow();
             String title = stage.getTitle();
 
-            List<Expense> expenseListImport = new ArrayList<>();
 
             ExpenseImport expenseImport = new ExpenseImport();
-            expenseListImport = expenseImport.importExpenses(title);
+            List<Expense> expenseListImport = expenseImport.importExpenses(title);
 
             ExpenseList expenseList = new ExpenseList();
             try {
@@ -119,10 +117,10 @@ public class ExpenseController {
                 ExpensesManager.addExpenseList(title);
             }
 
-            for(Expense expense: expenseListImport) {
+            for (Expense expense : expenseListImport) {
                 expenseList.addExpense(expense);
             }
-            ExpensesManager.overwriteexpenseListValue(title, expenseList);
+            ExpensesManager.overwriteExpenseListValue(title, expenseList);
             updateExpenseListView(expenseList);
             expenseListView.refresh();
         } catch (Exception e) {

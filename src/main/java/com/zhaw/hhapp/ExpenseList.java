@@ -13,18 +13,18 @@ public class ExpenseList {
         return expenses;
     }
 
-    public void setExpenses(List<Expense> expenses) {
-        this.expenses = expenses;
-    }
+//    public void setExpenses(List<Expense> expenses) {
+//        this.expenses = expenses;
+//    }
 
     public void addExpense(Expense expense) {
         expenses.add(expense);
     }
 
-    public void printExpenses(){
-        for (Expense expense : expenses) {
-            System.out.println(expense);
-        }
-    }
+//    public void printExpenses(){
+//        for (Expense expense : expenses) {
+//            System.out.println(expense);
+//        }
+//    }
 
 }

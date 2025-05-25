@@ -8,19 +8,24 @@ public class ExpensesList {
     public ExpensesList() {
 
     }
-
-    public Map<String, ExpenseList> getExpensesList() {
-        return expensesList;
-    }
+//
+//    public Map<String, ExpenseList> getExpensesList() {
+//        return expensesList;
+//    }
 
     public ExpenseList getExpenseList(String expenseListId) {
         return expensesList.get(expenseListId);
     }
+//
+//    public void setExpensesList(Map<String, ExpenseList> expensesList) {
+//        this.expensesList = expensesList;
+//    }
 
-    public void setExpensesList(Map<String, ExpenseList> expensesList) {
-        this.expensesList = expensesList;
-    }
-
+    /**
+     * Fügt eine neue Ausgabenliste unter der angegebenen ID hinzu oder überschreibt eine bestehende.
+     * @param expenseListID Der Name/ID der Ausgabenliste.
+     * @param expenseList Die hinzuzufügende Ausgabenliste.
+     */
     public void addExpenseList(String expenseListID, ExpenseList expenseList) {
         expensesList.put(expenseListID, expenseList);
     }
@@ -29,7 +34,4 @@ public class ExpensesList {
         expensesList.put(expenseListID, new ExpenseList());
     }
 
-    public void put(String expenseListID, ExpenseList expenseList) {
-        expensesList.put(expenseListID, expenseList);
-    }
 }
