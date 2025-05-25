@@ -12,18 +12,29 @@ import java.io.IOException;
 
 public class ExpenseManager {
     /**
-     * Speichert einzelne Ausgaben in einer Liste
-     * @param expenseList Enthält unterschiedliche Ausgaben
+     * Saves Expenses in a List given by ExpensesManager
+     * @param expenseList Contains Expenses
      */
-
     private ExpenseList expenseList;
     private String expenseListId;
     private Expense expense;
     FXMLLoader fxmlLoader;
 
     public ExpenseManager(String expenseListId) {
-        this.expenseList = new ExpenseList(); //sollte extern kreirt werden, Übersicht über Listen
+        /*
+        todo Structure:
+        1) new ExpenseList (todo later: new or load)
+        2) get User Inputs (in class ExpenseController)
+        3) show the user what the ExpenseList looks like after each button click (in class ExpenseController)
+        4) fill ExpenseList with user Inputs
+        5) Save Key-Value (ID-ExpenseList) in ExpensesList (or update the List at each Button Click)
+         */
+
+        // Step 1)
+        this.expenseList = new ExpenseList();
         ExpensesManager.addExpenseList(expenseListId);
+
+        //Step 2)
         fxmlLoader = new FXMLLoader(Main.class.getResource("/com/zhaw/hhapp/ExpenseView.fxml"));
         Scene scene = null;
         try {
@@ -38,7 +49,9 @@ public class ExpenseManager {
         stage.show();
         System.out.println("show Scene hat geklappt");
 
+        // Step 4)
         Platform.runLater(() -> getUserInput());
+        //ExpensesManager.addExpenseList(expenseListId, getUserInput());
     }
 
     public void getUserInput(){
@@ -47,7 +60,7 @@ public class ExpenseManager {
         ExpenseController controller = fxmlLoader.getController();
         if (controller != null) {
             expense = controller.addExpense();
-            System.out.println(expense.toString());
+            System.out.println(expense.toString()); // todo WHY DOES THIS NOT HAPPEN?
         } else {
             System.out.println("Fehler: Controller konnte nicht geladen werden!");
         }

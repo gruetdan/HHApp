@@ -14,8 +14,8 @@ import static javafx.application.Application.launch;
 
 public class ExpensesManager  {
     /**
-     * Speichert unterschiedliche Expense-List
-     * @param expenseLists Enthält unterschiedliche ExpenseList (z. B. Haushalt, Griechenland-Ferien, ...)
+     * Saves different ExpenseList in ExpensesList
+     * @param expenseLists Contains different ExpenseList (z. B. Haushalt, Griechenland-Ferien, ...)
      */
     public static ExpensesList expensesList = new ExpensesList();;
 
@@ -26,5 +26,8 @@ public class ExpensesManager  {
     public static void addExpenseList(String id) {
         expensesList.addExpenseList(id);
         System.out.println("ExpensesList was added - msg by ExpensesManager");
+    }
+    public static void addExpenseList(String id, ExpenseList expense) {
+        expensesList.addExpenseList(id, expense);
     }
 }
