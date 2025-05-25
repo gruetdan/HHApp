@@ -32,9 +32,10 @@ public class ExpenseManager {
 
         // Step 1)
         this.expenseList = new ExpenseList();
-        ExpensesManager.addExpenseList(expenseListId);
+        //ExpensesManager.addExpenseList(expenseListId);
 
         //Step 2)
+
         fxmlLoader = new FXMLLoader(Main.class.getResource("/com/zhaw/hhapp/ExpenseView.fxml"));
         Scene scene = null;
         try {
@@ -50,10 +51,12 @@ public class ExpenseManager {
         System.out.println("show Scene hat geklappt");
 
         // Step 4)
-        Platform.runLater(() -> getUserInput());
+        //Platform.runLater(() -> getUserInput());
+        //getUserInput();
         //ExpensesManager.addExpenseList(expenseListId, getUserInput());
     }
 
+/*
     public void getUserInput(){
         // Controller aus FXMLLoader holen
         System.out.println("getUserInput startet");
@@ -65,7 +68,7 @@ public class ExpenseManager {
             System.out.println("Fehler: Controller konnte nicht geladen werden!");
         }
     }
-
+*/
     public ExpenseManager(ExpenseList expenseList) {
         this.expenseList = expenseList;
     }

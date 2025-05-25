@@ -55,17 +55,30 @@ public class ExpenseController {
 
     @FXML
     public Expense addExpense() {
+        Stage stage = (Stage) exportToTXT.getScene().getWindow();
+        String title = stage.getTitle();
+        System.out.println("Fenstertitel: " + title);
         System.out.println("AddExpenseButton clicked");
+
         double amount = parseDouble(amountField.getText());
         String description = descriptionField.getText();
         String date = dateField.getText();
         String user = userField.getText();
-        //try {
-
+        try {
+            Expense expense = new Expense(amount, description, date, user);
+            ExpenseList expenseList = new ExpenseList();
+            expenseList = ExpensesManager.getExpenseList(title);
+            expenseList.addExpense(expense);
+            ExpensesManager.overwriteexpenseListValue(title, expenseList);
+            System.out.println("ExpensesList was added - msg by ExpensesManager");
+            //ExpensesManager.
             //String ExpenseListId;
 
             //expenseManager.addExpense(amount, description, date, user);
             //updateExpenseList();
+        //Stage stage = (Stage) myNode.getScene().getWindow();
+        //String title = stage.getTitle();
+           // ExpensesManager.overwriteexpenseListValue(stage.getTitle(), );
 
             // Felder leeren bzw. neu initialisieren
             amountField.clear();
@@ -73,9 +86,9 @@ public class ExpenseController {
             dateField.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             userField.setText(System.getProperty("user.name"));
 
-        /*} catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             amountField.setText("Ungültiger Betrag!");
-        }*/
+        }
         return new Expense(amount, description, date, user);
     }
 

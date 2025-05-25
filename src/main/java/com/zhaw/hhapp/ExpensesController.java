@@ -26,6 +26,7 @@ public class ExpensesController {
     void addExpenseList(ActionEvent event) {
         //String expenseListID = ExpenseListTextField.getText(); // todo:
         new ExpenseManager(ExpenseListTextField.getText());
+        ExpensesManager.addExpenseList(ExpenseListTextField.getText());
         System.out.println("AddExpenseListButton clicked");
 
     }

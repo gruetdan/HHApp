@@ -19,8 +19,8 @@ public class ExpensesManager  {
      */
     public static ExpensesList expensesList = new ExpensesList();;
 
-    public static ExpensesList getExpensesList() {
-        return expensesList;
+    public static ExpenseList getExpenseList(String id) {
+        return expensesList.getExpenseList(id);
     }
 
     public static void addExpenseList(String id) {
@@ -29,5 +29,9 @@ public class ExpensesManager  {
     }
     public static void addExpenseList(String id, ExpenseList expense) {
         expensesList.addExpenseList(id, expense);
+    }
+
+    public static void overwriteexpenseListValue(String id, ExpenseList expense) {
+        expensesList.put(id, expense);
     }
 }

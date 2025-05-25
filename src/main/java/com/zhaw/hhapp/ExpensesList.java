@@ -13,6 +13,10 @@ public class ExpensesList {
         return expensesList;
     }
 
+    public ExpenseList getExpenseList(String expenseListId) {
+        return expensesList.get(expenseListId);
+    }
+
     public void setExpensesList(Map<String, ExpenseList> expensesList) {
         this.expensesList = expensesList;
     }
@@ -25,4 +29,7 @@ public class ExpensesList {
         expensesList.put(expenseListID, new ExpenseList());
     }
 
+    public void put(String expenseListID, ExpenseList expenseList) {
+        expensesList.put(expenseListID, expenseList);
+    }
 }
