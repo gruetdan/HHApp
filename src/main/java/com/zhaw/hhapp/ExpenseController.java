@@ -5,12 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+//import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Double.parseDouble;
@@ -38,8 +38,8 @@ public class ExpenseController {
     @FXML
     private Button exportToTXT;
 
-    @FXML
-    private Button importFromTxt;
+//    @FXML
+//    private Button importFromTxt;
 
     @FXML
     public void initialize() {
@@ -79,7 +79,7 @@ public class ExpenseController {
    private void updateExpenseListView(ExpenseList expenseList) {
        expenseListView.getItems().clear();
        Stage stage = (Stage) exportToTXT.getScene().getWindow();
-       String title = stage.getTitle();
+       //String title = stage.getTitle();
        for (Expense expense : expenseList.getExpenses()) {
            expenseListView.getItems().add(expense.toString());
        }
