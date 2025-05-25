@@ -30,29 +30,37 @@ public class ExpenseService {
     }
 
     public ExpenseList importExpensesAndAddToList(String listName) {
-        // 1. Importiere die Ausgaben
+        //Importiere die Ausgaben
         ExpenseImport expenseImport = new ExpenseImport();
         List<Expense> importedExpenses = expenseImport.importExpenses(listName);
 
-        // 2. Hole oder erstelle die Ausgabenliste
+        // Hole oder erstelle die Ausgabenliste
         ExpenseList expenseList = ExpensesManager.getExpenseList(listName);
         if (expenseList == null) {
             expenseList = new ExpenseList();
             ExpensesManager.addExpenseList(listName, expenseList);
         }
 
-        // 3. Füge alle importierten Ausgaben hinzu
+        // Füge alle importierten Ausgaben hinzu
         for (Expense expense : importedExpenses) {
             expenseList.addExpense(expense);
         }
 
-        // 4. Speichere die Liste wieder zurück
+        // Speichere die Liste wieder zurück
         ExpensesManager.overwriteExpenseListValue(listName, expenseList);
 
-        // 5. Gib die aktualisierte Liste zurück (z.B. für die Anzeige)
+        //Gib die aktualisierte Liste zurück (z.B. für die Anzeige)
         return expenseList;
     }
 
+    public void exportExpensesToTxt(String listName) {
+        ExpenseList expenseList = ExpensesManager.getExpenseList(listName);
+
+        // prüfen, ob liste existiert
+        if (expenseList != null) {
+            ExpenseExport.exportExpenses(listName, expenseList.getExpenses());
+        }
+    }
     // Weitere Methoden hier ergänzen (z.B. Validierung, Löschen, ...)
 
 }

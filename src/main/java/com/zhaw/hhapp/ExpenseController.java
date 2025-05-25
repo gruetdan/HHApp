@@ -44,9 +44,7 @@ public class ExpenseController {
     @FXML
     public Button importFromTxt;
 
-//    @FXML
-//    private Button importFromTxt;
-
+    @FXML
     private ExpenseService expenseService = new ExpenseService();
 
     @FXML
@@ -98,9 +96,8 @@ public class ExpenseController {
 
     @FXML
     void exportToTxt(MouseEvent event) {
-        Stage stage = (Stage) exportToTXT.getScene().getWindow();
-        String title = stage.getTitle();
-        ExpenseExport.exportExpenses(title, ExpensesManager.getExpenseList(title).getExpenses());
+        String title = ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+        expenseService.exportExpensesToTxt(title);
     }
 
     @FXML
