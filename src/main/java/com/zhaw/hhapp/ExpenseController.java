@@ -78,7 +78,7 @@ public class ExpenseController {
 
    private void updateExpenseListView(ExpenseList expenseList) {
        expenseListView.getItems().clear();
-       Stage stage = (Stage) exportToTXT.getScene().getWindow();
+      // Stage stage = (Stage) exportToTXT.getScene().getWindow();
        //String title = stage.getTitle();
        for (Expense expense : expenseList.getExpenses()) {
            expenseListView.getItems().add(expense.toString());
