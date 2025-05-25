@@ -13,5 +13,5 @@
 <Button fx:id="addExpenseButton" onMouseClicked="#addExpense" text="Ausgabe hinzufügen" />
    <Button fx:id="exportToTXT" mnemonicParsing="false" onMouseClicked="#exportToTxt" text="Export to .txt" />
    <Button fx:id="importFromTxt" mnemonicParsing="false" onMouseClicked="#importExpenses" text="Import from .txt" />
-<ListView fx:id="expenseList" prefHeight="200" />
+<ListView fx:id="expenseListView" prefHeight="200" />
 </VBox>

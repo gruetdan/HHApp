@@ -27,4 +27,5 @@ public class ExpenseList {
             System.out.println(expense);
         }
     }
+
 }

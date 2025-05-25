@@ -39,7 +39,7 @@ public class ExpenseManager {
         fxmlLoader = new FXMLLoader(Main.class.getResource("/com/zhaw/hhapp/ExpenseView.fxml"));
         Scene scene = null;
         try {
-            scene = new Scene(fxmlLoader.load(), 320, 240);
+            scene = new Scene(fxmlLoader.load());
         }catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Fehler beim Laden der FXML-Datei!");

@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static java.lang.Double.parseDouble;
 
@@ -37,7 +40,7 @@ public class ExpenseController {
     private TextField userField;
 
     @FXML
-    private ListView<String> expenseList;
+    private ListView<String> expenseListView;
 
     @FXML
     private Button exportToTXT;
@@ -71,15 +74,7 @@ public class ExpenseController {
             expenseList.addExpense(expense);
             ExpensesManager.overwriteexpenseListValue(title, expenseList);
             System.out.println("ExpensesList was added - msg by ExpensesManager");
-            //ExpensesManager.
-            //String ExpenseListId;
-
-            //expenseManager.addExpense(amount, description, date, user);
-            //updateExpenseList();
-        //Stage stage = (Stage) myNode.getScene().getWindow();
-        //String title = stage.getTitle();
-           // ExpensesManager.overwriteexpenseListValue(stage.getTitle(), );
-
+            updateExpenseListView(expenseList);
             // Felder leeren bzw. neu initialisieren
             amountField.clear();
             descriptionField.clear();
@@ -97,15 +92,16 @@ public class ExpenseController {
 
     public void importExpenses(MouseEvent mouseEvent) {
     }
-}
 
-   /* private void updateExpenseList() {
 
-        expenseList.getItems().clear();
-        for (Expense expense : expenseManager.getExpenses()) {
-            expenseList.getItems().add(expense.toString());
-        }
+   private void updateExpenseListView(ExpenseList expenseList) {
+       expenseListView.getItems().clear();
+       for (Expense expense : expenseList.getExpenses()) {
+           expenseListView.getItems().add(expense.toString());
+       }
+   }
     }
+    /*
     @FXML
     void exportToTxt(MouseEvent event) {
         ExpenseExport.exportExpenses(expenseManager.getExpenses());
