@@ -10,7 +10,7 @@
 <TextField fx:id="descriptionField" promptText="Beschreibung" />
    <TextField fx:id="dateField" promptText="Datum dd.MM.yyyy (default heute)" />
    <TextField fx:id="userField" promptText="Benutzer (default Systeminfo)" />
-<Button fx:id="addExpenseButton" onMouseClicked="#addExpense" text="Ausgabe hinzufügen" />
+<Button fx:id="addExpenseButton" onMouseClicked="#handleAddExpense" text="Ausgabe hinzufügen" />
    <Button fx:id="exportToTXT" mnemonicParsing="false" onMouseClicked="#exportToTxt" text="Export to .txt" />
    <Button fx:id="importFromTxt" mnemonicParsing="false" onMouseClicked="#importExpenses" text="Import from .txt" />
 <ListView fx:id="expenseListView" prefHeight="200" />

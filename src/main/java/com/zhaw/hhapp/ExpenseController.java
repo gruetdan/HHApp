@@ -5,17 +5,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-//import javafx.scene.input.MouseEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 //import java.util.ArrayList;
-import java.util.List;
+//import java.util.List;
 
 import static java.lang.Double.parseDouble;
 
 public class ExpenseController {
+
     /**
      * Nimmt Werte entgegen und gibt an Manager weiter
      */
@@ -37,9 +38,16 @@ public class ExpenseController {
 
     @FXML
     private Button exportToTXT;
+    @FXML
+    private Button addExpenseButton;
+
+    @FXML
+    public Button importFromTxt;
 
 //    @FXML
 //    private Button importFromTxt;
+
+    private ExpenseService expenseService = new ExpenseService();
 
     @FXML
     public void initialize() {
@@ -50,29 +58,31 @@ public class ExpenseController {
     }
 
     @FXML
-    public Expense addExpense() {
-        double amount = parseDouble(amountField.getText());
-        String description = descriptionField.getText();
-        String date = dateField.getText();
-        String user = userField.getText();
+    public void handleAddExpense() {
         try {
-            Stage stage = (Stage) exportToTXT.getScene().getWindow();
-            String title = stage.getTitle();
+            double amount = parseDouble(amountField.getText());
+            String description = descriptionField.getText();
+            String date = dateField.getText();
+            String user = userField.getText();
             Expense expense = new Expense(amount, description, date, user);
-            ExpenseList expenseList = ExpensesManager.getExpenseList(title);
-            expenseList.addExpense(expense);
-            ExpensesManager.overwriteExpenseListValue(title, expenseList);
-            updateExpenseListView(expenseList);
-            // Felder leeren bzw. neu initialisieren
+
+            String title = ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+
+            expenseService.addExpense(title, expense);
+
+            ExpenseList updatedList = expenseService.getExpenseList(title);
+            updateExpenseListView(updatedList);
+
+            // Felder zurücksetzen:
             amountField.clear();
             descriptionField.clear();
             dateField.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
             userField.setText(System.getProperty("user.name"));
+            // Fehlerlabel, falls vorhanden, zurücksetzen
 
         } catch (NumberFormatException e) {
             amountField.setText("Ungültiger Betrag!");
         }
-        return new Expense(amount, description, date, user);
     }
 
 
@@ -87,47 +97,23 @@ public class ExpenseController {
 
 
     @FXML
-    //void exportToTxt(MouseEvent event) {
-    void exportToTxt() {
+    void exportToTxt(MouseEvent event) {
         Stage stage = (Stage) exportToTXT.getScene().getWindow();
         String title = stage.getTitle();
         ExpenseExport.exportExpenses(title, ExpensesManager.getExpenseList(title).getExpenses());
     }
 
-
-
-//
-//    @FXML
-//    void importExpenses(MouseEvent event) {
     @FXML
-    void importExpenses() {
-
+    void importExpenses(MouseEvent event) {
         try {
-            Stage stage = (Stage) exportToTXT.getScene().getWindow();
-            String title = stage.getTitle();
-
-
-            ExpenseImport expenseImport = new ExpenseImport();
-            List<Expense> expenseListImport = expenseImport.importExpenses(title);
-
-            ExpenseList expenseList = new ExpenseList();
-            try {
-                expenseList = ExpensesManager.getExpenseList(title);
-            } catch (Exception e) {
-                ExpensesManager.addExpenseList(title);
-            }
-
-            for (Expense expense : expenseListImport) {
-                expenseList.addExpense(expense);
-            }
-            ExpensesManager.overwriteExpenseListValue(title, expenseList);
+            String title = ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+            ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
             updateExpenseListView(expenseList);
             expenseListView.refresh();
         } catch (Exception e) {
-            System.out.println("An error importing expenses has occured.");
+            System.out.println("An error importing expenses has occurred.");
             System.out.println("Did you make sure, that the name of the ExpenseList (look at the title),");
             System.out.println("is identical to the .txt-File you want to import?");
         }
     }
-
 }

@@ -16,9 +16,9 @@ public class ExpensesManager  {
     public static void addExpenseList(String id) {
         expensesList.addExpenseList(id);
     }
-//    public static void addExpenseList(String id, ExpenseList expense) {
-//        expensesList.addExpenseList(id, expense);
-//    }
+    public static void addExpenseList(String id, ExpenseList expense) {
+        expensesList.addExpenseList(id, expense);
+    }
 
     public static void overwriteExpenseListValue(String id, ExpenseList expense) {
         expensesList.addExpenseList(id, expense);
