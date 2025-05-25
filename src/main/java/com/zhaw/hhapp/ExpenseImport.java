@@ -13,25 +13,18 @@ public class ExpenseImport {
         importedExpenses = new ArrayList<>();
     }
 
-    public List<Expense> importExpenses() {
-        /*
-        try (BufferedReader reader = new BufferedReader(new FileReader(new ExpenseManager().getFilename()))){
+    public List<Expense> importExpenses(String fileName) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
             String line;
             while ((line = reader.readLine())!=null){
                 String[] parts = line.split(",");
-                /*System.out.println(parts[0]);
-                System.out.println(parts[1]);
-                System.out.println(parts[2]);
-                System.out.println(parts[3]);
                 importedExpenses.add(new Expense(Double.parseDouble(parts[0]),parts[1],parts[2],parts[3]));
-                //System.out.println(line);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         System.out.println("Import erfolgreich");
 
-         */
     return importedExpenses;
     }
 }

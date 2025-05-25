@@ -7,9 +7,9 @@ import java.util.List;
 
 public class ExpenseExport {
 
-    public static void exportExpenses(List<Expense> expenses) {
-        /*
-        try (FileWriter writer = new FileWriter(new ExpenseManager().getFilename())) {
+    public static void exportExpenses(String fileName, List<Expense> expenses) {
+
+        try (FileWriter writer = new FileWriter(fileName)) {
             for (Expense expense : expenses) {
                 writer.write(expense.toString() + System.lineSeparator());
             }
@@ -17,8 +17,6 @@ public class ExpenseExport {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-         */
     }
 
 }

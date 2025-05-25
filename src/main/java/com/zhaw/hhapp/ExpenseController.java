@@ -21,8 +21,6 @@ import java.util.List;
 import static java.lang.Double.parseDouble;
 
 public class ExpenseController {
-
-
     /**
      * Nimmt Werte entgegen und gibt an Manager weiter
      */
@@ -58,16 +56,13 @@ public class ExpenseController {
 
     @FXML
     public Expense addExpense() {
-        Stage stage = (Stage) exportToTXT.getScene().getWindow();
-        String title = stage.getTitle();
-        System.out.println("Fenstertitel: " + title);
-        System.out.println("AddExpenseButton clicked");
-
         double amount = parseDouble(amountField.getText());
         String description = descriptionField.getText();
         String date = dateField.getText();
         String user = userField.getText();
         try {
+            Stage stage = (Stage) exportToTXT.getScene().getWindow();
+            String title = stage.getTitle();
             Expense expense = new Expense(amount, description, date, user);
             ExpenseList expenseList = new ExpenseList();
             expenseList = ExpensesManager.getExpenseList(title);
@@ -87,37 +82,55 @@ public class ExpenseController {
         return new Expense(amount, description, date, user);
     }
 
-    public void exportToTxt(MouseEvent mouseEvent) {
-    }
-
-    public void importExpenses(MouseEvent mouseEvent) {
-    }
-
 
    private void updateExpenseListView(ExpenseList expenseList) {
        expenseListView.getItems().clear();
+       Stage stage = (Stage) exportToTXT.getScene().getWindow();
+       String title = stage.getTitle();
        for (Expense expense : expenseList.getExpenses()) {
            expenseListView.getItems().add(expense.toString());
        }
    }
-    }
-    /*
+
+
     @FXML
     void exportToTxt(MouseEvent event) {
-        ExpenseExport.exportExpenses(expenseManager.getExpenses());
+        Stage stage = (Stage) exportToTXT.getScene().getWindow();
+        String title = stage.getTitle();
+        ExpenseExport.exportExpenses(title, ExpensesManager.getExpenseList(title).getExpenses());
     }
 
 
     @FXML
     void importExpenses(MouseEvent event) {
-        for(Expense expense: new ExpenseImport().importExpenses()){
-            expenseManager.addExpense(expense.getAmount(), expense.getDescription(), expense.getDate(), expense.getUserName());
-            updateExpenseList();
-        };
+
+        try {
+            Stage stage = (Stage) exportToTXT.getScene().getWindow();
+            String title = stage.getTitle();
+
+            List<Expense> expenseListImport = new ArrayList<>();
+
+            ExpenseImport expenseImport = new ExpenseImport();
+            expenseListImport = expenseImport.importExpenses(title);
+
+            ExpenseList expenseList = new ExpenseList();
+            try {
+                expenseList = ExpensesManager.getExpenseList(title);
+            } catch (Exception e) {
+                ExpensesManager.addExpenseList(title);
+            }
+
+            for(Expense expense: expenseListImport) {
+                expenseList.addExpense(expense);
+            }
+            ExpensesManager.overwriteexpenseListValue(title, expenseList);
+            updateExpenseListView(expenseList);
+            expenseListView.refresh();
+        } catch (Exception e) {
+            System.out.println("An error importing expenses has occured.");
+            System.out.println("Did you make sure, that the name of the ExpenseList (look at the title),");
+            System.out.println("is identical to the .txt-File you want to import?");
+        }
     }
 
-    public ExpenseManager getExpenseManager() {
-        return expenseManager;
-    }
- */
-
+}
