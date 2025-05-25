@@ -68,7 +68,6 @@ public class ExpenseController {
             expenseList = ExpensesManager.getExpenseList(title);
             expenseList.addExpense(expense);
             ExpensesManager.overwriteexpenseListValue(title, expenseList);
-            System.out.println("ExpensesList was added - msg by ExpensesManager");
             updateExpenseListView(expenseList);
             // Felder leeren bzw. neu initialisieren
             amountField.clear();

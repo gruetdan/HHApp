@@ -22,7 +22,6 @@ public class ExpenseManager {
 
     public ExpenseManager(String expenseListId) {
 
-        //this.expenseList = new ExpenseList();
         fxmlLoader = new FXMLLoader(Main.class.getResource("/com/zhaw/hhapp/ExpenseView.fxml"));
         Scene scene = null;
         try {

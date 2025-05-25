@@ -7,7 +7,6 @@ public class ExpenseList {
     private List<Expense> expenses;
     public ExpenseList() {
         expenses = new ArrayList<>();
-        System.out.println("ExpenseList was created");
     }
 
     public List<Expense> getExpenses() {
