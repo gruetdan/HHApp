@@ -61,7 +61,17 @@ public class ExpenseService {
             ExpenseExport.exportExpenses(listName, expenseList.getExpenses());
         }
     }
-    // Weitere Methoden hier ergänzen (z.B. Validierung, Löschen, ...)
+    public String validateExpense(Expense expense) {
+        double amount = expense.getAmount();
+        if (amount <= 0 || Double.isInfinite(amount) || Double.isNaN(amount)) {
+            return "Bitte einen positiven, gültigen Betrag grösser als 0 eingeben!";
+        }
+        if (expense.getDescription() == null || expense.getDescription().trim().isEmpty()) {
+            return "Beschreibung darf nicht leer sein!";
+        }
+        //
+        return null; // Alles ok
+    }
 
 }
 

@@ -53,6 +53,13 @@ public class ExpenseController {
             String user = userField.getText();
             Expense expense = new Expense(amount, description, date, user);
 
+            // Validierung im Service!
+            String validationError = expenseService.validateExpense(expense);
+            if (validationError != null) {
+                showErrorDialog(validationError);
+                return;
+            }
+
             String title = getWindowTitle();
 
             expenseService.addExpense(title, expense);
@@ -61,11 +68,8 @@ public class ExpenseController {
             updateExpenseListView(updatedList);
 
             // Felder zurücksetzen:
-            amountField.clear();
-            descriptionField.clear();
-            dateField.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-            userField.setText(System.getProperty("user.name"));
-            // Fehlerlabel, falls vorhanden, zurücksetzen
+            resetFields();
+
 
         } catch (NumberFormatException e) {
             showErrorDialog("Ungültiger Betrag!");
