@@ -64,7 +64,7 @@ public class ExpenseService {
     public String validateExpense(Expense expense) {
         double amount = expense.getAmount();
         if (amount <= 0 || Double.isInfinite(amount) || Double.isNaN(amount)) {
-            return "Bitte einen positiven, gültigen Betrag grösser als 0 eingeben!";
+            return "Bitte einen positiven, gültigen Betrag größer als 0 eingeben!";
         }
         if (expense.getDescription() == null || expense.getDescription().trim().isEmpty()) {
             return "Beschreibung darf nicht leer sein!";
