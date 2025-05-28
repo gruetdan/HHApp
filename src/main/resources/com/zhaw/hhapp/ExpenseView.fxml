@@ -15,5 +15,4 @@
    <Button fx:id="exportToTXT" mnemonicParsing="false" onMouseClicked="#exportToTxt" text="Export to .txt" />
    <Button fx:id="importFromTxt" mnemonicParsing="false" onMouseClicked="#importExpenses" text="Import from .txt" />
    <ListView fx:id="expenseListView" prefHeight="200" />
-   <Label fx:id="errorLabel" text="" style="-fx-text-fill: red;"/>
 </VBox>

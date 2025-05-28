@@ -42,7 +42,6 @@ public class ExpenseController {
         descriptionField.setText("");
         dateField.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         userField.setText(System.getProperty("user.name"));
-        showError("");
     }
 
     @FXML
@@ -100,10 +99,6 @@ public class ExpenseController {
         } catch (Exception e) {
             showErrorDialog("Fehler beim Import: Stimmt der Listenname mit der Datei überein?");
         }
-    }
-
-    private void showError(String message) {
-        if (errorLabel != null) errorLabel.setText(message);
     }
 
     private String getWindowTitle() {
