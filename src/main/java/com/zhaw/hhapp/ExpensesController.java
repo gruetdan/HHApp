@@ -10,7 +10,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
+/**
+ * Controller für die Verwaltung der Ausgabenlisten (UI-Eingaben).
+ * Gibt Aufgaben an den Service weiter und kümmert sich um die Benutzeroberfläche.
+ */
 public class ExpensesController {
     /**
      * Nimmt Werte entgegen und gibt an Manager weiter
@@ -22,10 +25,26 @@ public class ExpensesController {
     @FXML
     private TextField ExpenseListTextField;
 
+    // Instanz der Service-Klasse für die Logik
+    private ExpensesService expensesService = new ExpensesService();
+
     @FXML
     void addExpenseList(ActionEvent event) {
-        new ExpenseManager(ExpenseListTextField.getText());
-        ExpensesManager.addExpenseList(ExpenseListTextField.getText());
+        String listName = ExpenseListTextField.getText();
 
+        // Service fragt, ob Anlegen geklappt hat (inkl. Validierung)
+        boolean created = expensesService.addExpenseList(listName);
+
+        if (created) {
+            // Falls erfolgreich: Fenster für neue Liste öffnen
+            new ExpenseManager(listName);
+            // (Optional: UI-Feedback, z. B. Textfeld leeren oder Erfolgsmeldung)
+            ExpenseListTextField.clear();
+        } else {
+            // Falls nicht erfolgreich: Fehler anzeigen
+            // (z. B. weil Name leer oder schon vergeben)
+            // → Optional: messageLabel.setText("Name ungültig oder bereits vergeben!");
+            System.out.println("Fehler: Name ungültig oder Liste existiert bereits!");
+        }
     }
 }
