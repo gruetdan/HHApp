@@ -69,7 +69,7 @@ public class ExpenseService {
         if (expense.getDescription() == null || expense.getDescription().trim().isEmpty()) {
             return "Beschreibung darf nicht leer sein!";
         }
-        //
+        // ... weitere Checks
         return null; // Alles ok
     }
 
