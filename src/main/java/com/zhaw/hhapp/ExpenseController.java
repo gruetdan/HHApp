@@ -2,16 +2,13 @@ package com.zhaw.hhapp;
 
 import javafx.fxml.FXML;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-//import java.util.ArrayList;
-//import java.util.List;
+
 
 import static java.lang.Double.parseDouble;
 
@@ -22,37 +19,30 @@ public class ExpenseController {
      */
 
     @FXML
-    private TextField amountField;
+    private TextField amountField, descriptionField, dateField, userField;
 
     @FXML
-    private TextField descriptionField;
-
-    @FXML
-    private TextField dateField;
-
-    @FXML
-    private TextField userField;
+    private Button exportToTXT, addExpenseButton, importFromTxt;
 
     @FXML
     private ListView<String> expenseListView;
 
-    @FXML
-    private Button exportToTXT;
-    @FXML
-    private Button addExpenseButton;
+    @FXML private Label errorLabel; // Für User-Feedback
 
-    @FXML
-    public Button importFromTxt;
-
-    @FXML
     private ExpenseService expenseService = new ExpenseService();
 
     @FXML
     public void initialize() {
+        resetFields();
+    }
+
+
+    private void resetFields() {
         amountField.setText("0");
         descriptionField.setText("");
         dateField.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         userField.setText(System.getProperty("user.name"));
+        showError("");
     }
 
     @FXML
@@ -64,7 +54,7 @@ public class ExpenseController {
             String user = userField.getText();
             Expense expense = new Expense(amount, description, date, user);
 
-            String title = ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+            String title = getWindowTitle();
 
             expenseService.addExpense(title, expense);
 
@@ -79,15 +69,15 @@ public class ExpenseController {
             // Fehlerlabel, falls vorhanden, zurücksetzen
 
         } catch (NumberFormatException e) {
-            amountField.setText("Ungültiger Betrag!");
+            showErrorDialog("Ungültiger Betrag!");
         }
     }
 
 
    private void updateExpenseListView(ExpenseList expenseList) {
        expenseListView.getItems().clear();
-      // Stage stage = (Stage) exportToTXT.getScene().getWindow();
-       //String title = stage.getTitle();
+       Stage stage = (Stage) exportToTXT.getScene().getWindow();
+       String title = stage.getTitle();
        for (Expense expense : expenseList.getExpenses()) {
            expenseListView.getItems().add(expense.toString());
        }
@@ -96,21 +86,35 @@ public class ExpenseController {
 
     @FXML
     void exportToTxt(MouseEvent event) {
-        String title = ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+        String title = getWindowTitle();
         expenseService.exportExpensesToTxt(title);
     }
 
     @FXML
     void importExpenses(MouseEvent event) {
         try {
-            String title = ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+            String title = getWindowTitle();
             ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
             updateExpenseListView(expenseList);
             expenseListView.refresh();
         } catch (Exception e) {
-            System.out.println("An error importing expenses has occurred.");
-            System.out.println("Did you make sure, that the name of the ExpenseList (look at the title),");
-            System.out.println("is identical to the .txt-File you want to import?");
+            showErrorDialog("Fehler beim Import: Stimmt der Listenname mit der Datei überein?");
         }
+    }
+
+    private void showError(String message) {
+        if (errorLabel != null) errorLabel.setText(message);
+    }
+
+    private String getWindowTitle() {
+        return ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+    }
+
+    private void showErrorDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR); // Oder AlertType.INFORMATION für normale Meldungen
+        alert.setTitle("Fehler");
+        alert.setHeaderText(null); // Kein Header, nur die Nachricht
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
