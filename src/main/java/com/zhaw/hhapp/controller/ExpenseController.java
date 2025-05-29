@@ -38,6 +38,7 @@ public class ExpenseController {
     public void initialize() {
         resetFields();
     }
+    //todo: Prüfen ob Listen-Titel mit bestehender Liste übereinstimmt. Falls ja, dann direkt importieren
 
 
     private void resetFields() {
@@ -68,7 +69,7 @@ public class ExpenseController {
             expenseService.addExpense(title, expense);
 
             ExpenseList updatedList = expenseService.getExpenseList(title);
-            updateExpenseListView(updatedList);
+            updateExpenseListView(updatedList, expenseListView);
 
             // Felder zurücksetzen:
             resetFields();
@@ -80,7 +81,7 @@ public class ExpenseController {
     }
 
 
-   private void updateExpenseListView(ExpenseList expenseList) {
+   private void updateExpenseListView(ExpenseList expenseList, ListView<String> expenseListView) {
        expenseListView.getItems().clear();
        Stage stage = (Stage) exportToTXT.getScene().getWindow();
        String title = stage.getTitle();
@@ -101,7 +102,7 @@ public class ExpenseController {
         try {
             String title = getWindowTitle();
             ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
-            updateExpenseListView(expenseList);
+            updateExpenseListView(expenseList, expenseListView);
             expenseListView.refresh();
         } catch (Exception e) {
             showErrorDialog("Fehler beim Import: Stimmt der Listenname mit der Datei überein?");

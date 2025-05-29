@@ -3,6 +3,7 @@ package com.zhaw.hhapp.service;
 import com.zhaw.hhapp.model.Expense;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,12 +12,17 @@ import java.util.List;
 public class ExpenseImport {
     private List<Expense> importedExpenses;
 
+
+
     public ExpenseImport() {
         importedExpenses = new ArrayList<>();
     }
 
     public List<Expense> importExpenses(String fileName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))){
+        // Erstelle den vollständigen Pfad zur Datei im Unterordner "ExpenseLists"
+        String directoryPath = System.getProperty("user.dir") + File.separator + "ExpenseLists";
+        File file = new File(directoryPath, fileName);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
             String line;
             while ((line = reader.readLine())!=null){
                 String[] parts = line.split(",");

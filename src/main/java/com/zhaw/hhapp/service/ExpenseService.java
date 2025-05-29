@@ -5,6 +5,9 @@ package com.zhaw.hhapp.service;
 import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.model.ExpenseList;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -75,6 +78,15 @@ public class ExpenseService {
         }
         // ... weitere Checks
         return null; // Alles ok
+    }
+
+    private void updateExpenseListView(ExpenseList expenseList, Button exportToTXT, ListView<String> expenseListView) {
+        expenseListView.getItems().clear();
+        Stage stage = (Stage) exportToTXT.getScene().getWindow();
+        String title = stage.getTitle();
+        for (Expense expense : expenseList.getExpenses()) {
+            expenseListView.getItems().add(expense.toString());
+        }
     }
 
 }
