@@ -9,6 +9,6 @@
    <children>
       <Button fx:id="AddExpenseListButton" layoutX="80.0" layoutY="80.0" mnemonicParsing="false" onAction="#addExpenseList" text="Add Expense List" />
       <TextField fx:id="ExpenseListTextField" layoutX="59.0" layoutY="51.0" promptText="Expense List Name" />
-      <Label layoutX="59.0" layoutY="34.0" text="Create new Expense List" />
+      <Label layoutX="45.0" layoutY="30.0" alignment="CENTER" text="Geben Sie den Namen der Liste ein:"/>
    </children>
 </AnchorPane>
