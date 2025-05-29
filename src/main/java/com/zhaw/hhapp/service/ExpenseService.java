@@ -1,6 +1,10 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.service;
 
 //Geschäftslogik, die nicht zur UI gehört, also alles rund um das Verwalten, Importieren, Exportieren und ggf. Validieren von Ausgaben
+
+import com.zhaw.hhapp.manager.ExpensesManager;
+import com.zhaw.hhapp.model.Expense;
+import com.zhaw.hhapp.model.ExpenseList;
 
 import java.util.List;
 

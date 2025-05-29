@@ -1,15 +1,12 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.controller;
 
-import com.sun.tools.javac.Main;
+import com.zhaw.hhapp.manager.ExpenseManager;
+import com.zhaw.hhapp.service.ExpensesService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 /**
  * Controller für die Verwaltung der Ausgabenlisten (UI-Eingaben).
  * Gibt Aufgaben an den Service weiter und kümmert sich um die Benutzeroberfläche.

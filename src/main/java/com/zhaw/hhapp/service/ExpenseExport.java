@@ -1,5 +1,7 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.service;
 
+
+import com.zhaw.hhapp.model.Expense;
 
 import java.io.FileWriter;
 import java.io.IOException;

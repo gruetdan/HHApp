@@ -1,4 +1,4 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

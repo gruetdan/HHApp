@@ -1,6 +1,9 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.manager;
 
 //import static javafx.application.Application.launch;
+
+import com.zhaw.hhapp.model.ExpensesList;
+import com.zhaw.hhapp.model.ExpenseList;
 
 public class ExpensesManager  {
     /**

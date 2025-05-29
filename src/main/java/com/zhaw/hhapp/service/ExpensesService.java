@@ -1,8 +1,7 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.service;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import com.zhaw.hhapp.manager.ExpensesManager;
+
 /**
  * Service-Klasse für Geschäftslogik rund um Ausgabenlisten.
  * Trennt die Logik klar von der UI (Controller).

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Label?>
-<VBox alignment="CENTER" prefWidth="400" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.ExpenseController">
+<VBox alignment="CENTER" prefWidth="400" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.controller.ExpenseController">
 <TextField fx:id="amountField" promptText="Betrag (CHF)" />
 <TextField fx:id="descriptionField" promptText="Beschreibung" />
    <TextField fx:id="dateField" promptText="Datum dd.MM.yyyy (default heute)" />

@@ -1,9 +1,8 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.manager;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import com.zhaw.hhapp.Main;
+import com.zhaw.hhapp.model.Expense;
+import com.zhaw.hhapp.model.ExpenseList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

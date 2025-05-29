@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="126.0" prefWidth="266.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.ExpensesController">
+<AnchorPane prefHeight="126.0" prefWidth="266.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.controller.ExpensesController">
    <children>
       <Button fx:id="AddExpenseListButton" layoutX="80.0" layoutY="80.0" mnemonicParsing="false" onAction="#addExpenseList" text="Add Expense List" />
       <TextField fx:id="ExpenseListTextField" layoutX="59.0" layoutY="51.0" promptText="Expense List Name" />

@@ -1,5 +1,8 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.controller;
 
+import com.zhaw.hhapp.model.ExpenseList;
+import com.zhaw.hhapp.service.ExpenseService;
+import com.zhaw.hhapp.model.Expense;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
