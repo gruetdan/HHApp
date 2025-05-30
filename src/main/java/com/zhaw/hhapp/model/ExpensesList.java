@@ -2,29 +2,58 @@ package com.zhaw.hhapp.model;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Model class representing a collection of multiple expense lists.
+ * <p>
+ * Each expense list (e.g., for a household or a specific event) is stored by a unique identifier (String).
+ * Internally, a HashMap is used for fast lookup and management.
+ * </p>
+ *
+ * <ul>
+ *     <li>Provides methods to add, overwrite, and retrieve individual expense lists.</li>
+ *     <li>Acts as the underlying data structure for {@link com.zhaw.hhapp.manager.ExpensesManager}.</li>
+ * </ul>
+ */
 public class ExpensesList {
+    /**
+     * Internal map holding all ExpenseLists, each identified by a unique String key.
+     */
     private Map<String, ExpenseList> expensesList = new HashMap<>();
 
+    /**
+     * Constructs a new, empty ExpensesList.
+     */
     public ExpensesList() {
-
+        // No initialization needed, HashMap is already initialized above.
     }
 
+    /**
+     * Retrieves an ExpenseList by its identifier.
+     *
+     * @param expenseListId The name/ID of the expense list to retrieve.
+     * @return The corresponding ExpenseList, or null if it does not exist.
+     */
     public ExpenseList getExpenseList(String expenseListId) {
         return expensesList.get(expenseListId);
     }
 
-
     /**
-     * Fügt eine neue Ausgabenliste unter der angegebenen ID hinzu oder überschreibt eine bestehende.
+     * Adds a new expense list or overwrites an existing one with the given ID.
+     * Existence checks are handled externally.
      *
-     * @param expenseListID Der Name/ID der Ausgabenliste.
-     * @param expenseList   Die hinzuzufügende Ausgabenliste.
+     * @param expenseListID The identifier for the expense list.
+     * @param expenseList   The ExpenseList object to add or overwrite.
      */
     public void addExpenseList(String expenseListID, ExpenseList expenseList) {
         expensesList.put(expenseListID, expenseList);
     }
 
+    /**
+     * Adds a new, empty ExpenseList with the given ID.
+     * If a list with the same ID exists, it will be overwritten!
+     * Existence checks are handled externally.
+     * @param expenseListID The identifier for the new expense list.
+     */
     public void addExpenseList(String expenseListID) {
         expensesList.put(expenseListID, new ExpenseList());
     }
