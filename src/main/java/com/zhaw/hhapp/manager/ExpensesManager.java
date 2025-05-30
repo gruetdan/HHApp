@@ -1,6 +1,5 @@
 package com.zhaw.hhapp.manager;
 
-
 import com.zhaw.hhapp.model.ExpensesList;
 import com.zhaw.hhapp.model.ExpenseList;
 import java.io.File;
@@ -8,7 +7,7 @@ import java.io.File;
 public class ExpensesManager {
     /**
      * Saves different ExpenseList in ExpensesList
-     * expenseLists Contains different ExpenseList (z. B. Haushalt, Griechenland-Ferien, ...)
+     * expenseLists contains different ExpenseList (z. B. Haushalt, Griechenland-Ferien, ...)
      */
     public static ExpensesList expensesList = new ExpensesList();
 
