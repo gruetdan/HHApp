@@ -6,7 +6,6 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -89,7 +88,7 @@ public class ExpensesService {
 
     //todo: Funktion auslegern zusammen mit  Funktion updateExpenseListView in ExpenseController
     //Liste im Start-Fenster mit bestehenden Listen befüllen
-   public void updateListView(ArrayList<String> List, ListView<String> ListView, Button refButton) {
+    public void updateListView(ArrayList<String> List, ListView<String> ListView, Button refButton) {
         ListView.getItems().clear();
         Stage stage = new Stage();
         stage = (Stage) refButton.getScene().getWindow();

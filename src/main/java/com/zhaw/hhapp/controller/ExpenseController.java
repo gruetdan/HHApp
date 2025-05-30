@@ -6,11 +6,9 @@ import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.model.Expense;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -119,17 +117,6 @@ public class ExpenseController {
         expenseService.exportExpensesToTxt(title);
     }
 
-    /*@FXML
-    void importExpenses(MouseEvent event) {
-        try {
-            String title = getWindowTitle();
-            ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
-            updateExpenseListView(expenseList, expenseListView, exportToTXT);
-            expenseListView.refresh();
-        } catch (Exception e) {
-            showErrorDialog("Fehler beim Import: Stimmt der Listenname mit der Datei überein?");
-        }
-    }*/
 
     private void importExpenses() {
         try {

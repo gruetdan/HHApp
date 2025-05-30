@@ -1,17 +1,12 @@
 package com.zhaw.hhapp.controller;
 
 import com.zhaw.hhapp.manager.ExpenseManager;
-import com.zhaw.hhapp.model.Expense;
-import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpensesService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-
-import java.util.ArrayList;
 
 /**
  * Controller für die Verwaltung der Ausgabenlisten (UI-Eingaben).
@@ -65,9 +60,4 @@ public class ExpensesController {
         });
     }
 
-
-
-
-
 }
-//
