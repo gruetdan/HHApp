@@ -8,11 +8,11 @@
 
 <AnchorPane prefHeight="283.0" prefWidth="308.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.controller.ExpensesController">
    <children>
-      <Button fx:id="AddExpenseListButton" layoutX="173.0" layoutY="55.0" mnemonicParsing="false" onAction="#addExpenseList" text="Liste bearbeiten" />
-      <TextField fx:id="ExpenseListTextField" layoutX="22.0" layoutY="55.0" prefHeight="25.0" prefWidth="133.0" promptText="Expense List Name" />
-      <Label alignment="CENTER" layoutX="19.0" layoutY="14.0" prefHeight="17.0" prefWidth="217.0" text="Namen einer neuen oder bestehenden " />
-      <ListView fx:id="ExpensesListView" layoutX="22.0" layoutY="115.0" prefHeight="154.0" prefWidth="258.0" />
-      <Label alignment="CENTER" layoutX="19.0" layoutY="31.0" text="(siehe unten) Ausgaben-Liste" />
-      <Label alignment="CENTER" layoutX="20.0" layoutY="98.0" text="Bestehende Ausgaben-Liste(n)" />
+      <Button fx:id="addExpenseListButton" layoutX="173.0" layoutY="55.0" mnemonicParsing="false" onAction="#addExpenseList" text="Edit list" />
+      <TextField fx:id="expenseListTextField" layoutX="22.0" layoutY="55.0" prefHeight="25.0" prefWidth="133.0" promptText="Expense List name" />
+      <Label alignment="CENTER" layoutX="19.0" layoutY="14.0" prefHeight="17.0" prefWidth="217.0" text="Name of an existing or new" />
+      <ListView fx:id="expensesListView" layoutX="22.0" layoutY="115.0" prefHeight="154.0" prefWidth="258.0" />
+      <Label alignment="CENTER" layoutX="19.0" layoutY="31.0" text="(see below) expense list" />
+      <Label alignment="CENTER" layoutX="20.0" layoutY="98.0" text="Existing expense liste(s)" />
    </children>
 </AnchorPane>
