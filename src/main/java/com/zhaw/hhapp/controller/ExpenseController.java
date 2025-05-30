@@ -1,5 +1,6 @@
 package com.zhaw.hhapp.controller;
 
+import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.model.Expense;
@@ -31,20 +32,34 @@ public class ExpenseController {
     @FXML
     private ListView<String> expenseListView;
 
-    @FXML private Label errorLabel; // Für User-Feedback
+    @FXML
+    private Label errorLabel; // Für User-Feedback
 
     private ExpenseService expenseService = new ExpenseService();
 
     @FXML
     public void initialize() {
         resetFields();
+
+        // Szene-Listener hinzufügen
         Platform.runLater(() -> {
-            Stage stage = (Stage) exportToTXT.getScene().getWindow();
-            stage.setOnCloseRequest(event -> {
-                exportAktuelleListe();
-            });
+            try {
+                importExpenses();
+            } catch (Exception e) {
+                System.out.println("Sie arbeiten an einer neuen Liste. Diese gab es in folgendem Ordner bis anhin noch nicht: " + ExpensesManager.getDirectoryPath());
+            }
+            if (exportToTXT.getScene() != null) {
+                Stage stage = (Stage) exportToTXT.getScene().getWindow();
+                stage.setOnCloseRequest(event -> exportAktuelleListe());
+            } else {
+                System.err.println("Fehler: Scene wurde nicht geladen.");
+
+
+            }
         });
     }
+
+
     //todo: Prüfen ob Listen-Titel mit bestehender Liste übereinstimmt. Falls ja, dann direkt importieren
 
 
@@ -76,7 +91,7 @@ public class ExpenseController {
             expenseService.addExpense(title, expense);
 
             ExpenseList updatedList = expenseService.getExpenseList(title);
-            updateExpenseListView(updatedList, expenseListView);
+            updateExpenseListView(updatedList, expenseListView, exportToTXT);
 
             // Felder zurücksetzen:
             resetFields();
@@ -88,14 +103,14 @@ public class ExpenseController {
     }
 
 
-   private void updateExpenseListView(ExpenseList expenseList, ListView<String> expenseListView) {
-       expenseListView.getItems().clear();
-       Stage stage = (Stage) exportToTXT.getScene().getWindow();
-       String title = stage.getTitle();
-       for (Expense expense : expenseList.getExpenses()) {
-           expenseListView.getItems().add(expense.toString());
-       }
-   }
+    private void updateExpenseListView(ExpenseList expenseList, ListView<String> ListView, Button refButton) {
+        ListView.getItems().clear();
+        Stage stage = (Stage) refButton.getScene().getWindow();
+        String title = stage.getTitle();
+        for (Expense expense : expenseList.getExpenses()) {
+            ListView.getItems().add(expense.toString());
+        }
+    }
 
 
     @FXML
@@ -104,20 +119,36 @@ public class ExpenseController {
         expenseService.exportExpensesToTxt(title);
     }
 
-    @FXML
+    /*@FXML
     void importExpenses(MouseEvent event) {
         try {
             String title = getWindowTitle();
             ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
-            updateExpenseListView(expenseList, expenseListView);
+            updateExpenseListView(expenseList, expenseListView, exportToTXT);
             expenseListView.refresh();
         } catch (Exception e) {
             showErrorDialog("Fehler beim Import: Stimmt der Listenname mit der Datei überein?");
         }
+    }*/
+
+    private void importExpenses() {
+        try {
+            String title = getWindowTitle();
+            ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
+            updateExpenseListView(expenseList, expenseListView, exportToTXT);
+            expenseListView.refresh();
+        } catch (Exception e) {
+            //showErrorDialog("Fehler beim Import: Stimmt der Listenname mit der Datei überein?");
+        }
     }
 
     private String getWindowTitle() {
-        return ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+        if (exportToTXT.getScene() != null) {
+            return ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+        } else {
+            System.err.println("Fehler: Scene ist noch nicht geladen.");
+            return "Unbekannte Liste";
+        }
     }
 
     private void showErrorDialog(String message) {

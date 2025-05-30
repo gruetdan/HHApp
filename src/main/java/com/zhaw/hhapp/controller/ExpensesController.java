@@ -22,8 +22,6 @@ public class ExpensesController {
      * Nimmt Werte entgegen und gibt an Manager weiter
      */
 
-    ExpensesService expensesService = new ExpensesService();
-
     @FXML
     private Button AddExpenseListButton;
 
@@ -33,15 +31,15 @@ public class ExpensesController {
     @FXML
     private ListView<String> ExpensesListView;
 
-    // Instanz der Service-Klasse für die Logik
-    private ExpensesService expensesService2 = new ExpensesService();
+    // Instanz der Service-Klasse für Zugang zum Funktionen-Pool
+    private ExpensesService expensesService = new ExpensesService();
 
     @FXML
     void addExpenseList(ActionEvent event) {
         String listName = ExpenseListTextField.getText();
 
         // Service fragt, ob Anlegen geklappt hat (inkl. Validierung)
-        boolean created = expensesService2.addExpenseList(listName);
+        boolean created = expensesService.addExpenseList(listName);
 
         if (created) {
             // Falls erfolgreich: Fenster für neue Liste öffnen
@@ -58,22 +56,18 @@ public class ExpensesController {
 
     @FXML
     public void initialize() {
+        expensesService.createExpenseListsFolder();
         // Event hinzufügen, um sicherzustellen, dass die Szene existiert
         ExpenseListTextField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
-                updateExpensesListView(expensesService2.listTxtFiles(), ExpensesListView);
+                expensesService.updateListView(expensesService.listTxtFiles(), ExpensesListView, AddExpenseListButton);
             }
         });
     }
 
-    //todo: Funktion auslegern zusammen mit gleicher Funktion in ExpenseController
-    //Liste im Start-Fenster mit bestehenden Listen befüllen
-    private void updateExpensesListView(ArrayList<String> expensesList, ListView<String> expensesListView) {
-        expensesListView.getItems().clear();
-        Stage stage = (Stage) AddExpenseListButton.getScene().getWindow();
-        //String title = stage.getTitle();
-        for (String expenseListName : expensesList) {
-            expensesListView.getItems().add(expenseListName.toString());
-        }
-    }
+
+
+
+
 }
+//

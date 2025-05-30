@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseImport {
-    private List<Expense> importedExpenses;
+    /*private List<Expense> importedExpenses;
 
     public ExpenseImport() {
         importedExpenses = new ArrayList<>();
     }
-
 
     public static List<Expense> importExpenses(String fileName) {
         List<Expense> importedExpenses = new ArrayList<>();
@@ -28,6 +27,6 @@ public class ExpenseImport {
         throw new RuntimeException(e);
     }
         return importedExpenses;
-    }
+    }*/
 
 }

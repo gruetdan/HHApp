@@ -1,9 +1,15 @@
 package com.zhaw.hhapp.service;
 
 import com.zhaw.hhapp.manager.ExpensesManager;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -38,17 +44,13 @@ public class ExpensesService {
     public ArrayList<String> listTxtFiles() {
 
 
-        File directory = new File("ExpenseLists");
+        File directory = new File(ExpensesManager.getDirectoryPath());
         // Überprüfe, ob der Ordner existiert, falls nicht, erstelle ihn
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        String directoryPath = System.getProperty("user.dir")+ File.separator + "ExpenseLists";
 
-        System.out.println("listTxtFiles() got startet reading "+directoryPath);
-
-        File folder = new File(directoryPath);
-        File[] files = folder.listFiles();
+        File[] files = new File(ExpensesManager.getDirectoryPath()).listFiles();
 
         ArrayList<String> fileList = new ArrayList<>();
 
@@ -69,4 +71,32 @@ public class ExpensesService {
         }
         return fileList;
     }
+
+    // Unterodner ExpenseLists für die Ausgaben erstellen (falls noch nicht vorhanden)
+    public void createExpenseListsFolder() {
+        Path path = Paths.get(ExpensesManager.getDirectoryPath());
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                System.out.println("Unterordner 'ExpenseLists' wurde erstellt.");
+            } catch (Exception e) {
+                System.err.println("Fehler beim Erstellen des Unterordners: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Unterordner 'ExpenseLists' existiert bereits.");
+        }
+    }
+
+    //todo: Funktion auslegern zusammen mit  Funktion updateExpenseListView in ExpenseController
+    //Liste im Start-Fenster mit bestehenden Listen befüllen
+   public void updateListView(ArrayList<String> List, ListView<String> ListView, Button refButton) {
+        ListView.getItems().clear();
+        Stage stage = new Stage();
+        stage = (Stage) refButton.getScene().getWindow();
+        //String title = stage.getTitle();
+        for (String i : List) {
+            ListView.getItems().add(i.toString());
+        }
+    }
+
 }
