@@ -1,6 +1,7 @@
 package com.zhaw.hhapp.service;
 
 import com.zhaw.hhapp.manager.ExpensesManager;
+import com.zhaw.hhapp.model.ExpenseList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -118,6 +119,16 @@ public class ExpensesService {
         for (String i : list) {
             listView.getItems().add(i.toString());
         }
+    }
+
+    /**
+     * Retrieves the ExpenseList object with the given name.
+     *
+     * @param listName The name/identifier of the expense list.
+     * @return The ExpenseList object, or null if not found.
+     */
+    public ExpenseList getExpenseList(String listName) {
+        return ExpensesManager.getExpenseList(listName);
     }
 
 }

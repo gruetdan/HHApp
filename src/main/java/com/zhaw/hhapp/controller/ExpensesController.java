@@ -1,9 +1,12 @@
 package com.zhaw.hhapp.controller;
 
 import com.zhaw.hhapp.manager.ExpenseManager;
+import com.zhaw.hhapp.model.Expense;
+import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpensesService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -23,6 +26,12 @@ public class ExpensesController {
      */
     @FXML
     private Button addExpenseListButton;
+
+    /**
+     * Button to trigger the sum display for the selected expense list.
+     */
+    @FXML
+    private Button showSumButton;
 
     /**
      * TextField for entering the name of a new or existing expense list.
@@ -86,5 +95,67 @@ public class ExpensesController {
             }
         });
     }
+
+    /**
+     * Handles the "Show sum" button click.
+     * <p>
+     * Calculates and displays the total sum of all expenses in the selected expense list.
+     * Opens a dialog window with the result.
+     * </p>
+     */
+    @FXML
+    private void handleShowSum() {
+        // Get the selected list name from the ListView
+        String selectedListName = expensesListView.getSelectionModel().getSelectedItem();
+
+        if (selectedListName == null) {
+            showInfoDialog("Please select an expense list first.");
+            return;
+        }
+
+        // Get the ExpenseList using the service
+        ExpenseList expenseList = expensesService.getExpenseList(selectedListName);
+
+        if (expenseList == null) {
+            showInfoDialog("Selected list not found.");
+            return;
+        }
+
+        // Calculate the sum of all expenses in the list
+        double sum = expenseList.getExpenses().stream()
+                .mapToDouble(Expense::getAmount)
+                .sum();
+
+        // Show the sum in a dialog window
+        showSumDialog(selectedListName, sum);
+    }
+    /**
+     * Displays the sum dialog window for a specific expense list.
+     *
+     * @param listName The name of the expense list.
+     * @param sum      The calculated sum to display.
+     */
+    private void showSumDialog(String listName, double sum) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Sum of expenses");
+        alert.setHeaderText("List: " + listName);
+        alert.setContentText(String.format("Total sum of expenses: %.2f CHF", sum));
+        alert.showAndWait();
+    }
+
+    /**
+     * Shows an information dialog to the user.
+     *
+     * @param message The message to display.
+     */
+    private void showInfoDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
 
 }
