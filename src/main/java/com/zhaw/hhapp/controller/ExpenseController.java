@@ -12,47 +12,56 @@ import javafx.stage.Stage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
 import static java.lang.Double.parseDouble;
 
+/**
+ * Controller for the ExpenseView.fxml.
+ * <p>
+ * Handles user interactions and delegates logic to {@link ExpenseService}.
+ * Manages input fields, list view, and import/export operations for a single ExpenseList.
+ * </p>
+ */
 public class ExpenseController {
 
-    /**
-     * Nimmt Werte entgegen und gibt an Manager weiter
-     */
-
+    /** Text fields for expense entry (amount, description, date, user). */
     @FXML
     private TextField amountField, descriptionField, dateField, userField;
 
+    /** Buttons for export, add, and import actions. */
     @FXML
     private Button exportToTXT, addExpenseButton, importFromTxt;
 
+    /** ListView for displaying all expenses in the current list. */
     @FXML
     private ListView<String> expenseListView;
 
+    /** Label for displaying error messages to the user. */
     @FXML
-    private Label errorLabel; // Für User-Feedback
+    private Label errorLabel;
 
+    /** Service class for business logic and persistence operations. */
     private ExpenseService expenseService = new ExpenseService();
 
+    /**
+     * Initializes the controller, sets default field values,
+     * imports existing expenses if the list exists, and sets up export on window close.
+     */
     @FXML
     public void initialize() {
         resetFields();
 
-        // Szene-Listener hinzufügen
+        // Add scene listener for when UI is fully loaded.
         Platform.runLater(() -> {
             try {
                 importExpenses();
             } catch (Exception e) {
-                System.out.println("Sie arbeiten an einer neuen Liste. Diese gab es in folgendem Ordner bis anhin noch nicht: " + ExpensesManager.getDirectoryPath());
+                System.out.println("You are working on a new list. This did not exist yet in: " + ExpensesManager.getDirectoryPath());
             }
             if (exportToTXT.getScene() != null) {
                 Stage stage = (Stage) exportToTXT.getScene().getWindow();
-                stage.setOnCloseRequest(event -> exportAktuelleListe());
+                stage.setOnCloseRequest(event -> exportCurrentList());
             } else {
-                System.err.println("Fehler: Scene wurde nicht geladen.");
-
-
+                System.err.println("Error: Scene not loaded.");
             }
         });
     }
@@ -60,14 +69,20 @@ public class ExpenseController {
 
     //todo: Prüfen ob Listen-Titel mit bestehender Liste übereinstimmt. Falls ja, dann direkt importieren
 
-
+    /**
+     * Resets all input fields to default values.
+     */
     private void resetFields() {
-        amountField.setText("0");
+        amountField.setText("");
         descriptionField.setText("");
         dateField.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
         userField.setText(System.getProperty("user.name"));
     }
 
+    /**
+     * Handles the event when the "Add Expense" button is clicked.
+     * Validates input, adds the expense to the list, and updates the view.
+     */
     @FXML
     public void handleAddExpense() {
         try {
@@ -77,7 +92,7 @@ public class ExpenseController {
             String user = userField.getText();
             Expense expense = new Expense(amount, description, date, user);
 
-            // Validierung im Service!
+            // Validation logic in the service layer
             String validationError = expenseService.validateExpense(expense);
             if (validationError != null) {
                 showErrorDialog(validationError);
@@ -85,39 +100,48 @@ public class ExpenseController {
             }
 
             String title = getWindowTitle();
-
             expenseService.addExpense(title, expense);
-
             ExpenseList updatedList = expenseService.getExpenseList(title);
             updateExpenseListView(updatedList, expenseListView, exportToTXT);
 
-            // Felder zurücksetzen:
             resetFields();
 
-
         } catch (NumberFormatException e) {
-            showErrorDialog("Ungültiger Betrag!");
+            showErrorDialog("Invalid amount!");
         }
     }
 
-
-    private void updateExpenseListView(ExpenseList expenseList, ListView<String> ListView, Button refButton) {
-        ListView.getItems().clear();
+    /**
+     * Updates the expenseListView with the given list of expenses.
+     *
+     * @param expenseList The ExpenseList to display.
+     * @param listView    The ListView to update.
+     * @param refButton   Reference button for window context (could be avoided).
+     */
+    private void updateExpenseListView(ExpenseList expenseList, ListView<String> listView, Button refButton) {
+        listView.getItems().clear();
         Stage stage = (Stage) refButton.getScene().getWindow();
         String title = stage.getTitle();
         for (Expense expense : expenseList.getExpenses()) {
-            ListView.getItems().add(expense.toString());
+            listView.getItems().add(expense.toString());
         }
     }
 
 
+    /**
+     * Handles export action to save the current expense list as a TXT file.
+     *
+     * @param event Mouse event from the export button.
+     */
     @FXML
     void exportToTxt(MouseEvent event) {
         String title = getWindowTitle();
         expenseService.exportExpensesToTxt(title);
     }
 
-
+    /**
+     * Imports existing expenses from file into the current list and updates the view.
+     */
     private void importExpenses() {
         try {
             String title = getWindowTitle();
@@ -129,31 +153,44 @@ public class ExpenseController {
         }
     }
 
+    /**
+     * Returns the window title, which is used as the expense list identifier.
+     *
+     * @return The title of the current window or "Unknown list" if not set.
+     */
     private String getWindowTitle() {
         if (exportToTXT.getScene() != null) {
             return ((Stage) exportToTXT.getScene().getWindow()).getTitle();
         } else {
-            System.err.println("Fehler: Scene ist noch nicht geladen.");
-            return "Unbekannte Liste";
+            System.err.println("Error: Scene is not loaded yet.");
+            return "Unknown list";
         }
     }
 
+    /**
+     * Shows an error dialog to the user.
+     *
+     * @param message The error message to display.
+     */
     private void showErrorDialog(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR); // Oder AlertType.INFORMATION für normale Meldungen
-        alert.setTitle("Fehler");
-        alert.setHeaderText(null); // Kein Header, nur die Nachricht
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null); // No header, just message
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    private void exportAktuelleListe() {
+    /**
+     * Exports the current expense list when the window is closed, if the list is not empty.
+     */
+    private void exportCurrentList() {
         String listName = getWindowTitle();
         ExpenseList list = expenseService.getExpenseList(listName);
         if (list != null && !list.getExpenses().isEmpty()) {
             try {
                 expenseService.exportExpensesToTxt(listName);
             } catch (Exception e) {
-                showErrorDialog("Export fehlgeschlagen!");
+                showErrorDialog("Export failed!");
             }
         }
     }
