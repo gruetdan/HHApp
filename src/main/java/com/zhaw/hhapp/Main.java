@@ -6,9 +6,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
 
+/**
+ * The entry point of the Household Hub application.
+ * <p>
+ * This class launches the JavaFX application and loads the initial ExpensesView GUI.
+ * </p>
+ */
 public class Main extends Application {
+    /**
+     * Starts the JavaFX application.
+     *
+     * @param stage The primary stage for this application.
+     */
     @Override
     public void start(Stage stage) {
+        // Load the ExpensesView.fxml file to set up the main scene.
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ExpensesView.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -16,13 +28,18 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
+            // Print stack trace for debugging and show a user-friendly error message.
             e.printStackTrace();
-            System.out.println("Fehler beim Laden der FXML-Datei!");
+            System.out.println("Error loading FXML-file!");
         }
 
     }
 
-
+    /**
+     * The main method that launches the JavaFX application.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         launch(args);
     }
