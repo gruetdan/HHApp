@@ -3,7 +3,6 @@ package com.zhaw.hhapp.service;
 import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.model.ExpenseList;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,44 +11,75 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-//Geschäftslogik, die nicht zur UI gehört, also alles rund um das Verwalten, Importieren, Exportieren und ggf. Validieren von Ausgaben
+/**
+ * Service class for business logic related to managing, importing, exporting, and validating expenses.
+ * <p>
+ * This class separates application logic from the UI/controller, acting as an interface between the controllers and
+ * the managers/models.
+ * </p>
+ */
 public class ExpenseService {
 
-    // Fügt eine Ausgabe zur gewünschten Liste hinzu
+    /**
+     * Adds an expense to the specified expense list.
+     *
+     * @param listName The name of the expense list.
+     * @param expense  The expense to add.
+     */
     public void addExpense(String listName, Expense expense) {
         ExpenseList list = ExpensesManager.getExpenseList(listName);
         list.addExpense(expense);
         ExpensesManager.addExpenseList(listName, list);
     }
 
-    // Gibt die Ausgabenliste zurück (zur Anzeige/Weiterverarbeitung)
+    /**
+     * Returns the expense list for the given list name.
+     *
+     * @param listName The name of the expense list.
+     * @return The ExpenseList object.
+     */
     public ExpenseList getExpenseList(String listName) {
         return ExpensesManager.getExpenseList(listName);
     }
 
-
+    /**
+     * Exports all expenses of a given list to a TXT file using the ExpenseExport utility.
+     *
+     * @param listName The name of the expense list to export.
+     */
     public void exportExpensesToTxt(String listName) {
         ExpenseList expenseList = ExpensesManager.getExpenseList(listName);
 
-        // prüfen, ob liste existiert
+        // Check if the list exists
         if (expenseList != null) {
             ExpenseExport.exportExpenses(listName, expenseList.getExpenses());
         }
     }
-
+    /**
+     * Validates an Expense object for basic input constraints.
+     *
+     * @param expense The expense to validate.
+     * @return Null if valid, otherwise an error message.
+     */
     public String validateExpense(Expense expense) {
         double amount = expense.getAmount();
         if (amount <= 0 || Double.isInfinite(amount) || Double.isNaN(amount)) {
-            return "Bitte einen positiven, gültigen Betrag größer als 0 eingeben!";
+            return "Please enter a positive, valid amount greater than 0!";
         }
         if (expense.getDescription() == null || expense.getDescription().trim().isEmpty()) {
-            return "Beschreibung darf nicht leer sein!";
+            return "Description cannot be empty!";
         }
-        // ... weitere Checks
-        return null; // Alles ok
+
+        return null; // All good
     }
 
-
+    /**
+     * Imports expenses from a TXT/CSV file with the given name.
+     * Each line is parsed into an Expense object.
+     *
+     * @param fileName The file to import from (should end with .txt).
+     * @return A list of imported Expense objects.
+     */
     public List<Expense> importExpensesNew(String fileName) {
         Path filePath = Paths.get(ExpensesManager.getDirectoryPath(), fileName);
         List<Expense> importedExpenses = new ArrayList<>();
@@ -65,29 +95,33 @@ public class ExpenseService {
         return importedExpenses;
     }
 
+    /**
+     * Imports expenses for a given list name, adding them to the existing or new list.
+     * Updates the ExpensesManager and returns the up-to-date list.
+     *
+     * @param listName The name of the list to import into.
+     * @return The updated ExpenseList.
+     */
     public ExpenseList importExpensesAndAddToList(String listName) {
-        //Importiere die Ausgaben
-        //ExpenseImport expenseImport = new ExpenseImport();
+        // Import the expenses
         List<Expense> importedExpenses = importExpensesNew(listName);
 
-        // Hole oder erstelle die Ausgabenliste
+        // Get or create the expense list
         ExpenseList expenseList = ExpensesManager.getExpenseList(listName);
         if (expenseList == null) {
             expenseList = new ExpenseList();
             ExpensesManager.addExpenseList(listName, expenseList);
         }
 
-        // Füge alle importierten Ausgaben hinzu
+        // Add all imported expenses
         for (Expense expense : importedExpenses) {
             expenseList.addExpense(expense);
         }
 
-        // Speichere die Liste wieder zurück
+        // Save the updated list back to the manager
         ExpensesManager.addExpenseList(listName, expenseList);
 
-        //Gib die aktualisierte Liste zurück (z.B. für die Anzeige)
+        // Return the updated list (for display, etc.)
         return expenseList;
     }
-
 }
-
