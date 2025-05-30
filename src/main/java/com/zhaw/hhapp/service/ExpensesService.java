@@ -42,41 +42,35 @@ public class ExpensesService {
     }
 
     /**
-     * Lists all files in the ExpenseLists directory.
-     * Only returns file names (not directories).
+     * Lists all expense list files in the ExpenseLists directory.
+     * Only files ending with '.txt' are considered.
+     * Returns list names without the '.txt' extension for display.
      *
-     * @return ArrayList of file names in the ExpenseLists directory.
+     * @return ArrayList of expense list names (without .txt extension).
      */
-    //ToDo: Add file extension consistency for expense lists Ensure all expense lists are always saved and read with
-    // the .txt file extension. Refactor saving logic to append .txt if missing. Refactor file listing/reading to
-    // only consider files ending with .txt. (Optional) Provide migration for already existing lists without extension.
     public ArrayList<String> listTxtFiles() {
-
         File directory = new File(ExpensesManager.getDirectoryPath());
-        // Ensure the directory exists, create if not
         if (!directory.exists()) {
             directory.mkdirs();
         }
 
-        File[] files = new File(ExpensesManager.getDirectoryPath()).listFiles();
+        File[] files = directory.listFiles();
         ArrayList<String> fileList = new ArrayList<>();
 
         if (files != null) {
             for (File file : files) {
-                if (file.isFile()) {
-                    String fileName = file.getName();
-
-                    fileList.add(fileName);
-                    System.out.println(fileName);
-                } else { // @Daniel: brauchen wir diese else statements? ich glaube nicht, entfernen?
-                    System.out.println(file.getName() + " - Type: Directory");
+                String fileName = file.getName();
+                // Only consider files ending with .txt
+                if (file.isFile() && fileName.toLowerCase().endsWith(".txt")) {
+                    // Strip the .txt extension for display
+                    String nameWithoutExtension = fileName.replaceFirst("\\.txt$", "");
+                    fileList.add(nameWithoutExtension);
                 }
             }
-        } else {// @Daniel: brauchen wir diese else statements? ich glaube nicht, entfernen?
-            System.out.println("Subfolder does not exist or is empty.");
         }
         return fileList;
     }
+
 
 
     /**

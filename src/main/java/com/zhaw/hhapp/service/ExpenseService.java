@@ -81,14 +81,19 @@ public class ExpenseService {
      * @return A list of imported Expense objects.
      */
     public List<Expense> importExpensesNew(String fileName) {
+        // Always ensure only one .txt extension
+        fileName = fileName.replaceFirst("\\.txt$", "");
+        fileName += ".txt";
+
         Path filePath = Paths.get(ExpensesManager.getDirectoryPath(), fileName);
+
+
         List<Expense> importedExpenses = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toFile()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 importedExpenses.add(Expense.fromCsvString(line));
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -103,23 +108,34 @@ public class ExpenseService {
      * @return The updated ExpenseList.
      */
     public ExpenseList importExpensesAndAddToList(String listName) {
-        // Import the expenses
-        List<Expense> importedExpenses = importExpensesNew(listName);
+        // Ensure the list name has the .txt extension for import
+        String fileName = listName;
+        if (!fileName.toLowerCase().endsWith(".txt")) {
+            fileName += ".txt";
+        }
+        // Import the expenses from file
+        List<Expense> importedExpenses = importExpensesNew(fileName);
+
+        // Remove .txt for the internal list name (so you don't store the name with extension in memory)
+        String listKey = listName.replaceFirst("\\.txt$", "");
 
         // Get or create the expense list
-        ExpenseList expenseList = ExpensesManager.getExpenseList(listName);
+        ExpenseList expenseList = ExpensesManager.getExpenseList(listKey);
         if (expenseList == null) {
             expenseList = new ExpenseList();
-            ExpensesManager.addExpenseList(listName, expenseList);
+            ExpensesManager.addExpenseList(listKey, expenseList);
+        } else {
+
+            expenseList.getExpenses().clear();
         }
 
-        // Add all imported expenses
+        // Add all imported expenses (now always to a cleared list)
         for (Expense expense : importedExpenses) {
             expenseList.addExpense(expense);
         }
 
         // Save the updated list back to the manager
-        ExpensesManager.addExpenseList(listName, expenseList);
+        ExpensesManager.addExpenseList(listKey, expenseList);
 
         // Return the updated list (for display, etc.)
         return expenseList;

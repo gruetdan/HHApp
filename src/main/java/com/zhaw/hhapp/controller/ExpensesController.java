@@ -1,8 +1,10 @@
 package com.zhaw.hhapp.controller;
 
 import com.zhaw.hhapp.manager.ExpenseManager;
+import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.model.ExpenseList;
+import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.service.ExpensesService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +12,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+
+import java.util.ArrayList;
 
 /**
  * Controller for the ExpensesView.fxml, handling user interactions for managing multiple expense lists.
@@ -51,30 +55,55 @@ public class ExpensesController {
     private ExpensesService expensesService = new ExpensesService();
 
     /**
-     * Handles the event when the user clicks the 'Add/Edit Expense List' button.
+     * Handles the "Add/Edit Expense List" button click.
      * <p>
-     * Retrieves the name from the TextField, validates and creates the expense list via the service.
-     * If successful, opens the expense manager window for the new list; otherwise, displays an error.
+     * This method allows the user to open an existing expense list or create a new one if it does not yet exist.
+     * If the list already exists (either in memory or as a file), it is loaded/imported and the detail view is opened.
+     * If it does not exist, a new empty list is created and the detail view is opened.
+     * <p>
+     * If the input field is empty or a list cannot be created (invalid or duplicate name), an info dialog is shown.
      * </p>
      *
      * @param event The action event triggered by the button click.
      */
     @FXML
     void addExpenseList(ActionEvent event) {
-        String listName = expenseListTextField.getText();
+        // Get the name from the input field, remove ".txt" if present, and trim whitespace
+        String listName = expenseListTextField.getText().replaceFirst("\\.txt$", "").trim();
 
-        // Use the service to validate and create the new list
-        boolean created = expensesService.addExpenseList(listName);
-
-        if (created) {
-            // If successful: Open the ExpenseManager window for this list
-            new ExpenseManager(listName);
-            // Clear the input field as feedback
-            expenseListTextField.clear();
-        } else {
-            // If not successful: Display an error message (TODO: show in UI)
-            System.out.println("Error: Invalid name or list already exists!");
+        if (listName.isEmpty()) {
+            showInfoDialog("Please enter a name for the expense list.");
+            return;
         }
+
+        // Check if the list already exists in memory
+        ExpenseList loadedList = expensesService.getExpenseList(listName);
+
+        if (loadedList == null) {
+            // Not in memory: Does a corresponding file exist?
+            java.io.File listFile = new java.io.File(ExpensesManager.getDirectoryPath(), listName + ".txt");
+            if (listFile.exists()) {
+                // File exists: Import the list and register it in the manager/model
+                new ExpenseService().importExpensesAndAddToList(listName);
+                System.out.println("Imported existing list: " + listName);
+            } else {
+                // Truly new: create the list via the service
+                boolean created = expensesService.addExpenseList(listName);
+                if (!created) {
+                    showInfoDialog("Error: Invalid name or list already exists!");
+                    return;
+                }
+                System.out.println("Created new list: " + listName);
+            }
+        } else {
+            // List is already in memory
+            System.out.println("List exists in memory: " + listName);
+        }
+
+        // Open the ExpenseManager window for this list (either existing or newly created)
+        new ExpenseManager(listName);
+        // Clear the input field to provide UI feedback
+        expenseListTextField.clear();
     }
 
     /**
@@ -88,6 +117,8 @@ public class ExpensesController {
     public void initialize() {
         // Ensure the folder for storing expense lists exists
         expensesService.createExpenseListsFolder();
+
+        loadAllExpenseLists();
         // Add a listener to update the ListView when the scene becomes available
         expenseListTextField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
@@ -156,6 +187,24 @@ public class ExpensesController {
         alert.showAndWait();
     }
 
+    /**
+     * Loads all existing expense lists from file into the model at startup.
+     * This ensures all lists are available for operations like summing, even if not yet edited.
+     */
+    private void loadAllExpenseLists() {
+        // Hole alle Dateinamen mit .txt
+        ArrayList<String> listNames = expensesService.listTxtFiles();
+
+        for (String fileName : listNames) {
+            // Entferne .txt für den internen Listennamen, falls nötig!
+            String name = fileName.replaceFirst("\\.txt$", "");
+            // Versuche, die Liste zu importieren und im Manager/Model zu registrieren:
+            // Nutze deinen Import-Mechanismus (z.B. ExpenseService/ExpensesManager)
+            // Beispiel:
+            ExpenseList loadedList = new ExpenseService().importExpensesAndAddToList(name);
+            // Jetzt ist sie im ExpensesManager gespeichert
+        }
+    }
 
 
 }

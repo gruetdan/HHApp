@@ -48,23 +48,24 @@ public class ExpenseController {
      */
     @FXML
     public void initialize() {
+       // debug:
+        // System.out.println("[Controller] Initializing with windowTitle: " + getWindowTitle());
         resetFields();
-
-        // Add scene listener for when UI is fully loaded.
         Platform.runLater(() -> {
             try {
                 importExpenses();
             } catch (Exception e) {
-                System.out.println("You are working on a new list. This did not exist yet in: " + ExpensesManager.getDirectoryPath());
+                System.out.println("[Controller] No list yet: " + ExpensesManager.getDirectoryPath());
             }
             if (exportToTXT.getScene() != null) {
                 Stage stage = (Stage) exportToTXT.getScene().getWindow();
                 stage.setOnCloseRequest(event -> exportCurrentList());
             } else {
-                System.err.println("Error: Scene not loaded.");
+                System.err.println("[Controller] Scene not loaded.");
             }
         });
     }
+
 
 
     //todo: Prüfen ob Listen-Titel mit bestehender Liste übereinstimmt. Falls ja, dann direkt importieren
@@ -160,7 +161,8 @@ public class ExpenseController {
      */
     private String getWindowTitle() {
         if (exportToTXT.getScene() != null) {
-            return ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+            String title = ((Stage) exportToTXT.getScene().getWindow()).getTitle();
+            return title.replaceFirst("\\.txt$", "");  // Suffix immer entfernen!
         } else {
             System.err.println("Error: Scene is not loaded yet.");
             return "Unknown list";

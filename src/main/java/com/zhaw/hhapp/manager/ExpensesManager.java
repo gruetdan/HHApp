@@ -37,6 +37,8 @@ public class ExpensesManager {
      * @return The ExpenseList object, or null if it does not exist.
      */
     public static ExpenseList getExpenseList(String id) {
+        // Remove .txt if present (case insensitive)
+        id = id.replaceFirst("\\.txt$", "");
         return expensesList.getExpenseList(id);
     }
 
@@ -46,6 +48,7 @@ public class ExpensesManager {
      * @param id The name or identifier for the new expense list.
      */
     public static void addExpenseList(String id) {
+        id = id.replaceFirst("\\.txt$", "");
         expensesList.addExpenseList(id);
     }
 
@@ -56,6 +59,7 @@ public class ExpensesManager {
      * @param expense The ExpenseList object to add.
      */
     public static void addExpenseList(String id, ExpenseList expense) {
+        id = id.replaceFirst("\\.txt$", "");
         expensesList.addExpenseList(id, expense);
     }
 
@@ -69,3 +73,4 @@ public class ExpensesManager {
     }
 
 }
+
