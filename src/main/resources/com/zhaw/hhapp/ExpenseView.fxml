@@ -4,14 +4,26 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Label?>
-<VBox alignment="CENTER" prefWidth="400" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.controller.ExpenseController">
-<TextField fx:id="amountField" promptText="Betrag (CHF)" />
-<TextField fx:id="descriptionField" promptText="Beschreibung" />
+
+<VBox alignment="CENTER" prefWidth="400" spacing="10"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.zhaw.hhapp.controller.ExpenseController">
+
+   <Label text="Betrag:"/>
+   <TextField fx:id="amountField" promptText="Betrag (CHF)" />
+
+   <Label text="Beschreibung:"/>
+   <TextField fx:id="descriptionField" promptText="Beschreibung" />
+
+   <Label text="Datum:"/>
    <TextField fx:id="dateField" promptText="Datum dd.MM.yyyy (default heute)" />
+
+   <Label text="Benutzer:"/>
    <TextField fx:id="userField" promptText="Benutzer (default Systeminfo)" />
-<Button fx:id="addExpenseButton" onMouseClicked="#handleAddExpense" text="Ausgabe hinzufügen" />
+
+   <Button fx:id="addExpenseButton" onMouseClicked="#handleAddExpense" text="Ausgabe hinzufügen" />
    <Button fx:id="exportToTXT" mnemonicParsing="false" onMouseClicked="#exportToTxt" text="Export to .txt" />
    <Button fx:id="importFromTxt" mnemonicParsing="false" onMouseClicked="#importExpenses" text="Import from .txt" />
    <ListView fx:id="expenseListView" prefHeight="200" />

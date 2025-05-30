@@ -3,7 +3,6 @@ package com.zhaw.hhapp.service;
 import com.zhaw.hhapp.model.Expense;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,27 +11,23 @@ import java.util.List;
 public class ExpenseImport {
     private List<Expense> importedExpenses;
 
-
-
     public ExpenseImport() {
         importedExpenses = new ArrayList<>();
     }
 
-    public List<Expense> importExpenses(String fileName) {
-        // Erstelle den vollständigen Pfad zur Datei im Unterordner "ExpenseLists"
-        String directoryPath = System.getProperty("user.dir") + File.separator + "ExpenseLists";
-        File file = new File(directoryPath, fileName);
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
-            String line;
-            while ((line = reader.readLine())!=null){
-                String[] parts = line.split(",");
-                importedExpenses.add(new Expense(Double.parseDouble(parts[0]),parts[1],parts[2],parts[3]));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Import erfolgreich");
 
-    return importedExpenses;
+    public static List<Expense> importExpenses(String fileName) {
+        List<Expense> importedExpenses = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                importedExpenses.add(Expense.fromCsvString(line));
+            }
+
+    } catch (IOException e) {
+        throw new RuntimeException(e);
     }
+        return importedExpenses;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.zhaw.hhapp.controller;
 import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.model.Expense;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
@@ -37,6 +38,12 @@ public class ExpenseController {
     @FXML
     public void initialize() {
         resetFields();
+        Platform.runLater(() -> {
+            Stage stage = (Stage) exportToTXT.getScene().getWindow();
+            stage.setOnCloseRequest(event -> {
+                exportAktuelleListe();
+            });
+        });
     }
     //todo: Prüfen ob Listen-Titel mit bestehender Liste übereinstimmt. Falls ja, dann direkt importieren
 
@@ -120,4 +127,17 @@ public class ExpenseController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private void exportAktuelleListe() {
+        String listName = getWindowTitle();
+        ExpenseList list = expenseService.getExpenseList(listName);
+        if (list != null && !list.getExpenses().isEmpty()) {
+            try {
+                expenseService.exportExpensesToTxt(listName);
+            } catch (Exception e) {
+                showErrorDialog("Export fehlgeschlagen!");
+            }
+        }
+    }
+
 }

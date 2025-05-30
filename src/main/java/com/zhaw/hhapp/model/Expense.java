@@ -46,4 +46,18 @@ public class Expense {
             //System.out.println(userName);
             return String.format("%.2f,%s,%s,%s", amount, description, date, userName);
         }
+        public String toCsvString() {
+        return String.format("%.2f|%s|%s|%s", amount, description, date, userName);
+    }
+    public static Expense fromCsvString(String line) {
+        String[] parts = line.split("\\|", 4); // Das Pipe-Zeichen muss als Regex escaped werden
+        if (parts.length != 4) {
+            throw new IllegalArgumentException("Ungültiges CSV-Format für Expense: " + line);
+        }
+        double amount = Double.parseDouble(parts[0]);
+        String description = parts[1];
+        String date = parts[2];
+        String userName = parts[3];
+        return new Expense(amount, description, date, userName);
+    }
 }
