@@ -19,7 +19,7 @@ public class ExpenseService {
     public void addExpense(String listName, Expense expense) {
         ExpenseList list = ExpensesManager.getExpenseList(listName);
         list.addExpense(expense);
-        ExpensesManager.overwriteExpenseListValue(listName, list);
+        ExpensesManager.addExpenseList(listName, list);
     }
 
     // Gibt die Ausgabenliste zurück (zur Anzeige/Weiterverarbeitung)
@@ -83,7 +83,7 @@ public class ExpenseService {
         }
 
         // Speichere die Liste wieder zurück
-        ExpensesManager.overwriteExpenseListValue(listName, expenseList);
+        ExpensesManager.addExpenseList(listName, expenseList);
 
         //Gib die aktualisierte Liste zurück (z.B. für die Anzeige)
         return expenseList;
