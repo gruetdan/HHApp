@@ -1,11 +1,17 @@
 package com.zhaw.hhapp.service;
 
+import com.zhaw.hhapp.controller.ExpenseController;
+import com.zhaw.hhapp.controller.ExpensesController;
 import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.model.ExpenseList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -125,4 +131,40 @@ public class ExpensesService {
         return ExpensesManager.getExpenseList(listName);
     }
 
+
+    /**
+     * Window Manager: Ensures that we have one single main Window (ExpensesView).
+     * When we close the view of one expense List (ExpenseView) then we get back to the single main Window.
+     */
+    private static Stage mainStage;
+    public static void setMainStage(Stage stage) {
+        mainStage = stage;
+    }
+    public static Stage getMainStage() {
+        return mainStage;
+    }
+
+    private static ExpensesController mainController;
+    public static void setMainController(ExpensesController controller) {
+        mainController = controller;
+    }
+    public static ExpensesController getMainController() {
+        return mainController;
+    }
+
+    public static void showMainStage() {
+        if (mainStage != null) {
+            mainStage.show();
+        } else {
+            try {
+                FXMLLoader loader = new FXMLLoader(ExpenseController.class.getResource("/com/zhaw/hhapp/ExpensesView.fxml"));
+                Parent root = loader.load();
+                mainStage = new Stage();
+                mainStage.setScene(new Scene(root));
+                mainStage.show();
+            } catch (IOException e) {
+                System.err.println("Fehler beim Laden des Hauptfensters: " + e.getMessage());
+            }
+        }
+    }
 }

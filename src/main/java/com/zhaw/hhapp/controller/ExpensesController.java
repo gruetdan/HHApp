@@ -117,7 +117,7 @@ public class ExpensesController {
     public void initialize() {
         // Ensure the folder for storing expense lists exists
         expensesService.createExpenseListsFolder();
-
+        //expensesListView.getItems().clear(); // Vorherige Daten löschen
         loadAllExpenseLists();
         // Add a listener to update the ListView when the scene becomes available
         expenseListTextField.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -125,6 +125,7 @@ public class ExpensesController {
                 expensesService.updateListView(expensesService.listTxtFiles(), expensesListView, addExpenseListButton);
             }
         });
+        ExpensesService.setMainController(this); // Speichere den Controller
     }
 
     /**
@@ -166,7 +167,7 @@ public class ExpensesController {
      * @param listName The name of the expense list.
      * @param sum      The calculated sum to display.
      */
-    private void showSumDialog(String listName, double sum) {
+    public static void showSumDialog(String listName, double sum) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Sum of expenses");
         alert.setHeaderText("List: " + listName);
@@ -179,7 +180,7 @@ public class ExpensesController {
      *
      * @param message The message to display.
      */
-    private void showInfoDialog(String message) {
+    public static void showInfoDialog(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Info");
         alert.setHeaderText(null);
@@ -192,6 +193,7 @@ public class ExpensesController {
      * This ensures all lists are available for operations like summing, even if not yet edited.
      */
     private void loadAllExpenseLists() {
+        expensesListView.getItems().clear(); // Vorherige Daten löschen
         // Hole alle Dateinamen mit .txt
         ArrayList<String> listNames = expensesService.listTxtFiles();
 
@@ -204,6 +206,9 @@ public class ExpensesController {
             ExpenseList loadedList = new ExpenseService().importExpensesAndAddToList(name);
             // Jetzt ist sie im ExpensesManager gespeichert
         }
+        // Jetzt die ListView explizit aktualisieren
+        expensesListView.getItems().addAll(listNames);
+        expensesListView.refresh(); // GUI zwingend neu rendern
     }
 
 

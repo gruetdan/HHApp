@@ -4,11 +4,17 @@ import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.model.Expense;
+import com.zhaw.hhapp.service.ExpensesService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -23,23 +29,33 @@ import static java.lang.Double.parseDouble;
  */
 public class ExpenseController {
 
-    /** Text fields for expense entry (amount, description, date, user). */
+    /**
+     * Text fields for expense entry (amount, description, date, user).
+     */
     @FXML
     private TextField amountField, descriptionField, dateField, userField;
 
-    /** Buttons for export, add, and import actions. */
+    /**
+     * Buttons for export, add, and import actions.
+     */
     @FXML
     private Button exportToTXT, addExpenseButton, importFromTxt;
 
-    /** ListView for displaying all expenses in the current list. */
+    /**
+     * ListView for displaying all expenses in the current list.
+     */
     @FXML
     private ListView<String> expenseListView;
 
-    /** Label for displaying error messages to the user. */
+    /**
+     * Label for displaying error messages to the user.
+     */
     @FXML
     private Label errorLabel;
 
-    /** Service class for business logic and persistence operations. */
+    /**
+     * Service class for business logic and persistence operations.
+     */
     private ExpenseService expenseService = new ExpenseService();
 
     /**
@@ -48,7 +64,7 @@ public class ExpenseController {
      */
     @FXML
     public void initialize() {
-       // debug:
+        // debug:
         // System.out.println("[Controller] Initializing with windowTitle: " + getWindowTitle());
         resetFields();
         Platform.runLater(() -> {
@@ -59,13 +75,23 @@ public class ExpenseController {
             }
             if (exportToTXT.getScene() != null) {
                 Stage stage = (Stage) exportToTXT.getScene().getWindow();
-                stage.setOnCloseRequest(event -> exportCurrentList());
+                stage.setOnCloseRequest(event -> {
+                            exportCurrentList();
+                            //ExpensesService.showMainStage();
+                            ExpensesController mainController = ExpensesService.getMainController();
+                            if (mainController != null) {
+                                System.out.println("Reinitializing MainController...");
+                                mainController.initialize();
+                            } else {
+                                System.err.println("MainController not found!");
+                            }
+                        }
+                );
             } else {
                 System.err.println("[Controller] Scene not loaded.");
             }
         });
     }
-
 
 
     //todo: Prüfen ob Listen-Titel mit bestehender Liste übereinstimmt. Falls ja, dann direkt importieren

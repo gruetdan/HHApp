@@ -1,5 +1,6 @@
 package com.zhaw.hhapp;
 
+import com.zhaw.hhapp.service.ExpensesService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,6 +27,7 @@ public class Main extends Application {
             Scene scene = new Scene(fxmlLoader.load());
             stage.setTitle("Overview ExpensesList");
             stage.setScene(scene);
+            ExpensesService.setMainStage(stage); // Saves window in static variable to be reused
             stage.show();
         } catch (IOException e) {
             // Print stack trace for debugging and show a user-friendly error message.

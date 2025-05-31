@@ -4,6 +4,7 @@ module com.example.hhappstructuretest {
 
     requires com.dlsc.formsfx;
     requires jdk.compiler;
+    requires java.desktop;
 
     opens com.zhaw.hhapp to javafx.fxml;
     exports com.zhaw.hhapp;
