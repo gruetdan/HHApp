@@ -8,19 +8,19 @@
 
 <VBox alignment="CENTER" prefWidth="400" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.controller.ExpenseController">
 
-   <Label text="Betrag:" />
-   <TextField fx:id="amountField" promptText="Betrag (CHF)" />
+   <Label text="Anount:" />
+   <TextField fx:id="amountField" promptText="Anount (CHF)" />
 
-   <Label text="Beschreibung:" />
-   <TextField fx:id="descriptionField" promptText="Beschreibung" />
+   <Label text="Description:" />
+   <TextField fx:id="descriptionField" promptText="Description" />
 
-   <Label text="Datum:" />
-   <TextField fx:id="dateField" promptText="Datum dd.MM.yyyy (default heute)" />
+   <Label text="Date:" />
+   <TextField fx:id="dateField" promptText="Date dd.MM.yyyy (default today)" />
 
-   <Label text="Benutzer:" />
-   <TextField fx:id="userField" promptText="Benutzer (default Systeminfo)" />
+   <Label text="User:" />
+   <TextField fx:id="userField" promptText="User (default systeminformation)" />
 
-   <Button fx:id="addExpenseButton" onMouseClicked="#handleAddExpense" text="Ausgabe hinzufügen" />
-   <Button fx:id="exportToTXT" mnemonicParsing="false" onMouseClicked="#exportToTxt" text="Export to .txt" />
+   <Button fx:id="addExpenseButton" onMouseClicked="#handleAddExpense" text="add expense" />
+   <Button fx:id="exportToTXT" mnemonicParsing="false" onMouseClicked="#exportToTxt" text="export list to file(.txt)" />
    <ListView fx:id="expenseListView" prefHeight="200" />
 </VBox>

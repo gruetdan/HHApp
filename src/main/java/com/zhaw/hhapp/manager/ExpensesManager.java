@@ -30,44 +30,6 @@ public class ExpensesManager {
      */
     public static String directoryPath = System.getProperty("user.dir") + File.separator + "ExpenseLists";
 
-    /**
-     * Retrieves a specific ExpenseList by its identifier.
-     *
-     * @param id The name or identifier of the expense list.
-     * @return The ExpenseList object, or null if it does not exist.
-     */
-    public static ExpenseList getExpenseList(String id) {
-        // Remove .txt if present (case insensitive)
-        id = id.replaceFirst("\\.txt$", "");
-        return expensesList.getExpenseList(id);
-    }
-
-    /**
-     * Adds a new empty ExpenseList with the given identifier.
-     *
-     * @param id The name or identifier for the new expense list.
-     */
-    public static void addExpenseList(String id) {
-        id = id.replaceFirst("\\.txt$", "");
-        expensesList.addExpenseList(id);
-    }
-
-    /**
-     * Adds an existing ExpenseList with the given identifier.
-     *
-     * @param id      The name or identifier for the expense list.
-     * @param expense The ExpenseList object to add.
-     */
-    public static void addExpenseList(String id, ExpenseList expense) {
-        id = id.replaceFirst("\\.txt$", "");
-        expensesList.addExpenseList(id, expense);
-    }
-
-    /**
-     * Returns the path to the directory where expense lists are stored.
-     *
-     * @return The directory path as a String.
-     */
     public static String getDirectoryPath() {
         return directoryPath;
     }

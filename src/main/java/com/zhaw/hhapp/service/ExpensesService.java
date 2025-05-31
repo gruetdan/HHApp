@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * Service class for business logic related to expense lists.
+ * Service class for business logic related to expenses lists.
  * <p>
  * This class separates the application logic from the UI controller,
  * providing methods for creating lists, listing files, and folder management.
@@ -33,17 +33,18 @@ public class ExpensesService {
      * @param name Name of the new expense list.
      * @return true if created successfully, false otherwise.
      */
+    // todo: difference to new ExpenseService().importExpensesAndAddToList(name);
     public boolean addExpenseList(String name) {
         // Validate name
         if (name == null || name.trim().isEmpty()) {
             return false;
         }
         // Check if the list already exists
-        if (ExpensesManager.getExpenseList(name) != null) {
+        if (ExpensesManager.expensesList.getExpenseList(name) != null) {
             return false;
         }
         // Create new list
-        ExpensesManager.addExpenseList(name);
+        ExpensesManager.expensesList.addExpenseList(name);
         return true;
     }
 
@@ -52,17 +53,23 @@ public class ExpensesService {
      * Only files ending with '.txt' are considered.
      * Returns list names without the '.txt' extension for display.
      *
-     * @return ArrayList of expense list names (without .txt extension).
+     * @return ArrayList of expense list names (String without .txt extension).
      */
+    //todo: When application is started, update automatically static ExpensesManager.expensesList (and use it!)
     public ArrayList<String> listTxtFiles() {
+        /*
+        * Create file-variable (pointer) to the folder which contains the existing expense lists.
+        * or create folder if not available yet.
+        * And create file-list with all the existing expense lists.
+        */
         File directory = new File(ExpensesManager.getDirectoryPath());
         if (!directory.exists()) {
             directory.mkdirs();
         }
-
         File[] files = directory.listFiles();
-        ArrayList<String> fileList = new ArrayList<>();
 
+        // Save the file names in an Array List of Strings
+        ArrayList<String> fileList = new ArrayList<>();
         if (files != null) {
             for (File file : files) {
                 String fileName = file.getName();
@@ -75,26 +82,6 @@ public class ExpensesService {
             }
         }
         return fileList;
-    }
-
-
-
-    /**
-     * Creates the 'ExpenseLists' subfolder for expenses, if it does not already exist.
-     * This ensures the application has a dedicated folder for storing expense lists.
-     */
-    public void createExpenseListsFolder() {
-        Path path = Paths.get(ExpensesManager.getDirectoryPath());
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectories(path);
-                System.out.println("Subfolder 'ExpenseLists' has been created.");
-            } catch (Exception e) {
-                System.err.println("Error creating subfolder: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Subfolder 'ExpenseLists' already exists.");
-        }
     }
 
     /**
@@ -128,13 +115,15 @@ public class ExpensesService {
      * @return The ExpenseList object, or null if not found.
      */
     public ExpenseList getExpenseList(String listName) {
-        return ExpensesManager.getExpenseList(listName);
+        return ExpensesManager.expensesList.getExpenseList(listName);
     }
 
-
+//todo: Window Manager in eigene Klasse auslagern
     /**
      * Window Manager: Ensures that we have one single main Window (ExpensesView).
+     * <p>
      * When we close the view of one expense List (ExpenseView) then we get back to the single main Window.
+     * </p>
      */
     private static Stage mainStage;
     public static void setMainStage(Stage stage) {

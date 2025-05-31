@@ -27,9 +27,9 @@ public class ExpenseService {
      * @param expense  The expense to add.
      */
     public void addExpense(String listName, Expense expense) {
-        ExpenseList list = ExpensesManager.getExpenseList(listName);
+        ExpenseList list = ExpensesManager.expensesList.getExpenseList(listName);
         list.addExpense(expense);
-        ExpensesManager.addExpenseList(listName, list);
+        ExpensesManager.expensesList.addExpenseList(listName, list);
     }
 
     /**
@@ -39,7 +39,7 @@ public class ExpenseService {
      * @return The ExpenseList object.
      */
     public ExpenseList getExpenseList(String listName) {
-        return ExpensesManager.getExpenseList(listName);
+        return ExpensesManager.expensesList.getExpenseList(listName);
     }
 
     /**
@@ -48,7 +48,7 @@ public class ExpenseService {
      * @param listName The name of the expense list to export.
      */
     public void exportExpensesToTxt(String listName) {
-        ExpenseList expenseList = ExpensesManager.getExpenseList(listName);
+        ExpenseList expenseList = ExpensesManager.expensesList.getExpenseList(listName);
 
         // Check if the list exists
         if (expenseList != null) {
@@ -120,10 +120,10 @@ public class ExpenseService {
         String listKey = listName.replaceFirst("\\.txt$", "");
 
         // Get or create the expense list
-        ExpenseList expenseList = ExpensesManager.getExpenseList(listKey);
+        ExpenseList expenseList = ExpensesManager.expensesList.getExpenseList(listKey);
         if (expenseList == null) {
             expenseList = new ExpenseList();
-            ExpensesManager.addExpenseList(listKey, expenseList);
+            ExpensesManager.expensesList.addExpenseList(listKey, expenseList);
         } else {
 
             expenseList.getExpenses().clear();
@@ -135,7 +135,7 @@ public class ExpenseService {
         }
 
         // Save the updated list back to the manager
-        ExpensesManager.addExpenseList(listKey, expenseList);
+        ExpensesManager.expensesList.addExpenseList(listKey, expenseList);
 
         // Return the updated list (for display, etc.)
         return expenseList;

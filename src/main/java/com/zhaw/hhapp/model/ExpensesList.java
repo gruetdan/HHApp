@@ -18,15 +18,16 @@ public class ExpensesList {
     /**
      * Internal map holding all ExpenseLists, each identified by a unique String key.
      */
-    private Map<String, ExpenseList> expensesList = new HashMap<>();
+    private Map<String, ExpenseList> expensesList;
 
     /**
      * Constructs a new, empty ExpensesList.
      */
     public ExpensesList() {
-        // No initialization needed, HashMap is already initialized above.
+        this.expensesList = new HashMap<>();
     }
 
+    //todo: Folgende Funktion ist auch in ExpensesManager vorhanden.
     /**
      * Retrieves an ExpenseList by its identifier.
      *
@@ -34,6 +35,7 @@ public class ExpensesList {
      * @return The corresponding ExpenseList, or null if it does not exist.
      */
     public ExpenseList getExpenseList(String expenseListId) {
+        expenseListId = expenseListId.replaceFirst("\\.txt$", "");
         return expensesList.get(expenseListId);
     }
 
@@ -45,6 +47,7 @@ public class ExpensesList {
      * @param expenseList   The ExpenseList object to add or overwrite.
      */
     public void addExpenseList(String expenseListID, ExpenseList expenseList) {
+        expenseListID = expenseListID.replaceFirst("\\.txt$", "");
         expensesList.put(expenseListID, expenseList);
     }
 
@@ -55,6 +58,7 @@ public class ExpensesList {
      * @param expenseListID The identifier for the new expense list.
      */
     public void addExpenseList(String expenseListID) {
+        expenseListID = expenseListID.replaceFirst("\\.txt$", "");
         expensesList.put(expenseListID, new ExpenseList());
     }
 

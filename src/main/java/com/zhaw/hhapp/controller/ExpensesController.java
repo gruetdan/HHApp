@@ -78,7 +78,6 @@ public class ExpensesController {
 
         // Check if the list already exists in memory
         ExpenseList loadedList = expensesService.getExpenseList(listName);
-
         if (loadedList == null) {
             // Not in memory: Does a corresponding file exist?
             java.io.File listFile = new java.io.File(ExpensesManager.getDirectoryPath(), listName + ".txt");
@@ -115,9 +114,7 @@ public class ExpensesController {
      */
     @FXML
     public void initialize() {
-        // Ensure the folder for storing expense lists exists
-        expensesService.createExpenseListsFolder();
-        //expensesListView.getItems().clear(); // Vorherige Daten löschen
+        // List the file names in ExpensesManager.getDirectoryPath()
         loadAllExpenseLists();
         // Add a listener to update the ListView when the scene becomes available
         expenseListTextField.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -125,9 +122,11 @@ public class ExpensesController {
                 expensesService.updateListView(expensesService.listTxtFiles(), expensesListView, addExpenseListButton);
             }
         });
-        ExpensesService.setMainController(this); // Speichere den Controller
 
-        // Option for the user to choose an Element in the ListView by click, instead of typing
+        // Save the controller (to come back to it after editing a specific expense list)
+        ExpensesService.setMainController(this);
+
+        // Option for the user to choose an element in the ListView by clicking, instead of typing
         expensesListView.setOnMouseClicked(event -> {
             String selectedItem = expensesListView.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
@@ -198,25 +197,24 @@ public class ExpensesController {
 
     /**
      * Loads all existing expense lists from file into the model at startup.
+     * <p>
      * This ensures all lists are available for operations like summing, even if not yet edited.
      */
     private void loadAllExpenseLists() {
-        expensesListView.getItems().clear(); // Vorherige Daten löschen
-        // Hole alle Dateinamen mit .txt
+        // Delete the entries in the list to reload for each window-opening / coming back to it
+        expensesListView.getItems().clear();
+        // Get file names of existing expense lists
         ArrayList<String> listNames = expensesService.listTxtFiles();
 
         for (String fileName : listNames) {
-            // Entferne .txt für den internen Listennamen, falls nötig!
+            // Delete file extension .txt (if necessary) for representation
             String name = fileName.replaceFirst("\\.txt$", "");
-            // Versuche, die Liste zu importieren und im Manager/Model zu registrieren:
-            // Nutze deinen Import-Mechanismus (z.B. ExpenseService/ExpensesManager)
-            // Beispiel:
+            // Update the static ExpensesList (todo: rethink elegance, rethink utility - is it needed?)
             ExpenseList loadedList = new ExpenseService().importExpensesAndAddToList(name);
-            // Jetzt ist sie im ExpensesManager gespeichert
         }
-        // Jetzt die ListView explizit aktualisieren
+        // Show the file names in the List (and force GUI to refresh)
         expensesListView.getItems().addAll(listNames);
-        expensesListView.refresh(); // GUI zwingend neu rendern
+        expensesListView.refresh();
     }
 
 
