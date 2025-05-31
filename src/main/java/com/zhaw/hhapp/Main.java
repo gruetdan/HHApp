@@ -1,6 +1,8 @@
 package com.zhaw.hhapp;
 
+import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.service.ExpensesService;
+import com.zhaw.hhapp.service.WindowManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,13 +23,15 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
+        // Fill static map expensesList with the existing data-files
+        ExpensesManager.load();
         // Load the ExpensesView.fxml file to set up the main scene.
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ExpensesView.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             stage.setTitle("Overview ExpensesList");
             stage.setScene(scene);
-            ExpensesService.setMainStage(stage); // Saves window in static variable to be reused
+            WindowManager.setMainStage(stage); // Saves window in static variable to be reused
             stage.show();
         } catch (IOException e) {
             // Print stack trace for debugging and show a user-friendly error message.

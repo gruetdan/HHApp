@@ -2,7 +2,10 @@ package com.zhaw.hhapp.manager;
 
 import com.zhaw.hhapp.model.ExpensesList;
 import com.zhaw.hhapp.model.ExpenseList;
+import com.zhaw.hhapp.service.ExpenseService;
+
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Manager class for handling the collection of all expense lists.
@@ -34,5 +37,44 @@ public class ExpensesManager {
         return directoryPath;
     }
 
+    public static void load(){
+        listTxtFiles();
+
+        for (String fileName : expensesList.keySet()) {
+            // Delete file extension .txt (if necessary) for representation
+            String name = fileName.replaceFirst("\\.txt$", "");
+            // Update the static ExpensesList (todo: rethink elegance, rethink utility - is it needed?)
+            //todo: importExpensesAndAddToList in expensesService or directly here?
+            expensesList.addExpenseList(name,new ExpenseService().importExpensesAndAddToList(name));
+        }
+    }
+    private static void listTxtFiles() {
+        /*
+         * Create file-variable (pointer) to the folder which contains the existing expense lists.
+         * or create folder if not available yet.
+         * And create file-list with all the existing expense lists.
+         */
+        File directory = new File(getDirectoryPath());
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        File[] files = directory.listFiles();
+
+        // Save the file names in an Array List of Strings
+        //ArrayList<String> fileList = new ArrayList<>();
+        if (files != null) {
+            for (File file : files) {
+                String fileName = file.getName();
+                // Only consider files ending with .txt
+                if (file.isFile() && fileName.toLowerCase().endsWith(".txt")) {
+                    // Strip the .txt extension for display
+                    String nameWithoutExtension = fileName.replaceFirst("\\.txt$", "");
+                    //fileList.add(nameWithoutExtension);
+                    expensesList.addExpenseList(nameWithoutExtension);
+                }
+            }
+        }
+        //return fileList;
+    }
 }
 

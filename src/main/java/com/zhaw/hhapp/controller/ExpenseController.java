@@ -5,6 +5,7 @@ import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.service.ExpensesService;
+import com.zhaw.hhapp.service.WindowManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -78,7 +79,7 @@ public class ExpenseController {
                 stage.setOnCloseRequest(event -> {
                             exportCurrentList();
                             //ExpensesService.showMainStage();
-                            ExpensesController mainController = ExpensesService.getMainController();
+                            ExpensesController mainController = WindowManager.getMainController();
                             if (mainController != null) {
                                 System.out.println("Reinitializing MainController...");
                                 mainController.initialize();
@@ -95,7 +96,7 @@ public class ExpenseController {
 
 
     //todo: Prüfen ob Listen-Titel mit bestehender Liste übereinstimmt. Falls ja, dann direkt importieren
-
+    // IN MAIN WERDEN NEU ALLE LISTEN ZU BEGINN IMPORTIERT
     /**
      * Resets all input fields to default values.
      */
@@ -172,8 +173,8 @@ public class ExpenseController {
     private void importExpenses() {
         try {
             String title = getWindowTitle();
-            ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
-            updateExpenseListView(expenseList, expenseListView, exportToTXT);
+            //ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
+            updateExpenseListView(ExpensesManager.expensesList.getExpenseList(title), expenseListView, exportToTXT);
             expenseListView.refresh();
         } catch (Exception e) {
             //showErrorDialog("Fehler beim Import: Stimmt der Listenname mit der Datei überein?");

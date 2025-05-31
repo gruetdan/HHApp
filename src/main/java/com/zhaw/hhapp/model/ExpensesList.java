@@ -2,6 +2,8 @@ package com.zhaw.hhapp.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
 /**
  * Model class representing a collection of multiple expense lists.
  * <p>
@@ -61,5 +63,8 @@ public class ExpensesList {
         expenseListID = expenseListID.replaceFirst("\\.txt$", "");
         expensesList.put(expenseListID, new ExpenseList());
     }
-
+    // Method to retrieve all keys (expense list IDs)
+    public Set<String> keySet() {
+        return expensesList.keySet();
+    }
 }

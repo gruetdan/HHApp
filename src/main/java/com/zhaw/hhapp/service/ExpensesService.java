@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Service class for business logic related to expenses lists.
@@ -33,8 +34,8 @@ public class ExpensesService {
      * @param name Name of the new expense list.
      * @return true if created successfully, false otherwise.
      */
-    // todo: difference to new ExpenseService().importExpensesAndAddToList(name);
-    public boolean addExpenseList(String name) {
+
+   /* public boolean addExpenseList(String name) {
         // Validate name
         if (name == null || name.trim().isEmpty()) {
             return false;
@@ -46,7 +47,7 @@ public class ExpensesService {
         // Create new list
         ExpensesManager.expensesList.addExpenseList(name);
         return true;
-    }
+    }*/
 
     /**
      * Lists all expense list files in the ExpenseLists directory.
@@ -96,7 +97,7 @@ public class ExpensesService {
      * @param refButton A reference button from which to get the scene and stage (should be avoided in services).
      */
     // TODO: Refactor this method (and related UI logic) to the ExpensesController.
-    public void updateListView(ArrayList<String> list, ListView<String> listView, Button refButton) {
+    public void updateListView(Set<String> list, ListView<String> listView, Button refButton) {
         listView.getItems().clear();
 
         // Get the current stage from the reference button
@@ -118,42 +119,4 @@ public class ExpensesService {
         return ExpensesManager.expensesList.getExpenseList(listName);
     }
 
-//todo: Window Manager in eigene Klasse auslagern
-    /**
-     * Window Manager: Ensures that we have one single main Window (ExpensesView).
-     * <p>
-     * When we close the view of one expense List (ExpenseView) then we get back to the single main Window.
-     * </p>
-     */
-    private static Stage mainStage;
-    public static void setMainStage(Stage stage) {
-        mainStage = stage;
-    }
-    public static Stage getMainStage() {
-        return mainStage;
-    }
-
-    private static ExpensesController mainController;
-    public static void setMainController(ExpensesController controller) {
-        mainController = controller;
-    }
-    public static ExpensesController getMainController() {
-        return mainController;
-    }
-
-    public static void showMainStage() {
-        if (mainStage != null) {
-            mainStage.show();
-        } else {
-            try {
-                FXMLLoader loader = new FXMLLoader(ExpenseController.class.getResource("/com/zhaw/hhapp/ExpensesView.fxml"));
-                Parent root = loader.load();
-                mainStage = new Stage();
-                mainStage.setScene(new Scene(root));
-                mainStage.show();
-            } catch (IOException e) {
-                System.err.println("Fehler beim Laden des Hauptfensters: " + e.getMessage());
-            }
-        }
-    }
 }

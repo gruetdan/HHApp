@@ -6,6 +6,7 @@ import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.service.ExpensesService;
+import com.zhaw.hhapp.service.WindowManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -77,11 +78,12 @@ public class ExpensesController {
         }
 
         // Check if the list already exists in memory
-        ExpenseList loadedList = expensesService.getExpenseList(listName);
-        if (loadedList == null) {
+        //ExpenseList loadedList = expensesService.getExpenseList(listName);
+        if (ExpensesManager.expensesList.getExpenseList(listName) == null) {
             // Not in memory: Does a corresponding file exist?
+            ExpensesManager.expensesList.addExpenseList(listName);
             java.io.File listFile = new java.io.File(ExpensesManager.getDirectoryPath(), listName + ".txt");
-            if (listFile.exists()) {
+            /*if (listFile.exists()) {
                 // File exists: Import the list and register it in the manager/model
                 new ExpenseService().importExpensesAndAddToList(listName);
                 System.out.println("Imported existing list: " + listName);
@@ -93,7 +95,7 @@ public class ExpensesController {
                     return;
                 }
                 System.out.println("Created new list: " + listName);
-            }
+            }*/
         } else {
             // List is already in memory
             System.out.println("List exists in memory: " + listName);
@@ -119,12 +121,12 @@ public class ExpensesController {
         // Add a listener to update the ListView when the scene becomes available
         expenseListTextField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
-                expensesService.updateListView(expensesService.listTxtFiles(), expensesListView, addExpenseListButton);
+                expensesService.updateListView(ExpensesManager.expensesList.keySet(), expensesListView, addExpenseListButton);
             }
         });
 
         // Save the controller (to come back to it after editing a specific expense list)
-        ExpensesService.setMainController(this);
+        WindowManager.setMainController(this);
 
         // Option for the user to choose an element in the ListView by clicking, instead of typing
         expensesListView.setOnMouseClicked(event -> {
@@ -203,17 +205,9 @@ public class ExpensesController {
     private void loadAllExpenseLists() {
         // Delete the entries in the list to reload for each window-opening / coming back to it
         expensesListView.getItems().clear();
-        // Get file names of existing expense lists
-        ArrayList<String> listNames = expensesService.listTxtFiles();
 
-        for (String fileName : listNames) {
-            // Delete file extension .txt (if necessary) for representation
-            String name = fileName.replaceFirst("\\.txt$", "");
-            // Update the static ExpensesList (todo: rethink elegance, rethink utility - is it needed?)
-            ExpenseList loadedList = new ExpenseService().importExpensesAndAddToList(name);
-        }
         // Show the file names in the List (and force GUI to refresh)
-        expensesListView.getItems().addAll(listNames);
+        expensesListView.getItems().addAll(ExpensesManager.expensesList.keySet());
         expensesListView.refresh();
     }
 
