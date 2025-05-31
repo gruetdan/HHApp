@@ -126,6 +126,14 @@ public class ExpensesController {
             }
         });
         ExpensesService.setMainController(this); // Speichere den Controller
+
+        // Option for the user to choose an Element in the ListView by click, instead of typing
+        expensesListView.setOnMouseClicked(event -> {
+            String selectedItem = expensesListView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                expenseListTextField.setText(selectedItem);
+            }
+        });
     }
 
     /**
