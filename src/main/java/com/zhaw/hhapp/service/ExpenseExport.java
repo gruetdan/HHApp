@@ -19,8 +19,6 @@ import java.util.List;
  * </p>
  */
 
-
-
 public class ExpenseExport {
 
     /**

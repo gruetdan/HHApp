@@ -107,7 +107,7 @@ public class ExpenseService {
      * @param listName The name of the list to import into.
      * @return The updated ExpenseList.
      */
-    public ExpenseList importExpensesAndAddToList(String listName) {
+    /*public ExpenseList importExpensesAndAddToList(String listName) {
         // Ensure the list name has the .txt extension for import
         String fileName = listName;
         if (!fileName.toLowerCase().endsWith(".txt")) {
@@ -139,5 +139,5 @@ public class ExpenseService {
 
         // Return the updated list (for display, etc.)
         return expenseList;
-    }
+    }*/
 }

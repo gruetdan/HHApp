@@ -1,5 +1,12 @@
 package com.zhaw.hhapp.model;
 
+import com.zhaw.hhapp.manager.ExpensesManager;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,4 +47,19 @@ public class ExpenseList {
     public void addExpense(Expense expense) {
         expenses.add(expense);
     }
+
+    /*public ExpenseList importExpensesFromFile(String fileName) {
+        Path filePath = Paths.get(ExpensesManager.getDirectoryPath(), fileName);
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toFile()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                ExpensesManager.expensesList.getExpenseList(fileName.replaceFirst("\\.txt$", "")).addExpense(Expense.fromCsvString(line));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return this;
+    }*/
+
+
 }

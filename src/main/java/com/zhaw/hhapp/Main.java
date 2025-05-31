@@ -23,8 +23,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        // Fill static map expensesList with the existing data-files
-        ExpensesManager.load();
+
         // Load the ExpensesView.fxml file to set up the main scene.
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("ExpensesView.fxml"));
@@ -47,6 +46,10 @@ public class Main extends Application {
      * @param args The command line arguments.
      */
     public static void main(String[] args) {
+        // Fill static map expensesList with the existing data-files
+        ExpensesManager.load();
+
+        // Start FXML
         launch(args);
     }
 }

@@ -1,11 +1,13 @@
 package com.zhaw.hhapp.manager;
 
+import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.model.ExpensesList;
 import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpenseService;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manager class for handling the collection of all expense lists.
@@ -38,17 +40,6 @@ public class ExpensesManager {
     }
 
     public static void load(){
-        listTxtFiles();
-
-        for (String fileName : expensesList.keySet()) {
-            // Delete file extension .txt (if necessary) for representation
-            String name = fileName.replaceFirst("\\.txt$", "");
-            // Update the static ExpensesList (todo: rethink elegance, rethink utility - is it needed?)
-            //todo: importExpensesAndAddToList in expensesService or directly here?
-            expensesList.addExpenseList(name,new ExpenseService().importExpensesAndAddToList(name));
-        }
-    }
-    private static void listTxtFiles() {
         /*
          * Create file-variable (pointer) to the folder which contains the existing expense lists.
          * or create folder if not available yet.
@@ -70,11 +61,42 @@ public class ExpensesManager {
                     // Strip the .txt extension for display
                     String nameWithoutExtension = fileName.replaceFirst("\\.txt$", "");
                     //fileList.add(nameWithoutExtension);
-                    expensesList.addExpenseList(nameWithoutExtension);
+                    expensesList.addExpenseList(nameWithoutExtension,importExpensesAndAddToList(nameWithoutExtension));//new ExpenseList().importExpensesFromFile(fileName));//
                 }
             }
         }
-        //return fileList;
+    }
+
+
+    private static ExpenseList importExpensesAndAddToList(String listName) {
+        // Ensure the list name has the .txt extension for import
+        String fileName = listName;
+        if (!fileName.toLowerCase().endsWith(".txt")) {
+            fileName += ".txt";
+        }
+        // Import the expenses from file
+        List<Expense> importedExpenses = new ExpenseService().importExpensesNew(fileName);
+
+        // Remove .txt for the internal list name (so you don't store the name with extension in memory)
+        String listKey = listName.replaceFirst("\\.txt$", "");
+
+        // Get or create the expense list - make sure to update and not to overwrite the existing expensesList
+        ExpenseList expenseList = expensesList.getExpenseList(listKey);
+        if (expenseList == null) {
+            expenseList = new ExpenseList();
+            expensesList.addExpenseList(listKey, expenseList);
+        } else {
+
+            expenseList.getExpenses().clear();
+        }
+
+        // Add all imported expenses (now always to a cleared list)
+        for (Expense expense : importedExpenses) {
+            expenseList.addExpense(expense);
+        }
+
+        // Return the updated list (for display, etc.)
+        return expenseList;
     }
 }
 

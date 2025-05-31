@@ -56,7 +56,7 @@ public class ExpensesService {
      *
      * @return ArrayList of expense list names (String without .txt extension).
      */
-    //todo: When application is started, update automatically static ExpensesManager.expensesList (and use it!)
+
     public ArrayList<String> listTxtFiles() {
         /*
         * Create file-variable (pointer) to the folder which contains the existing expense lists.
