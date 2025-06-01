@@ -100,44 +100,4 @@ public class ExpenseService {
         return importedExpenses;
     }
 
-    /**
-     * Imports expenses for a given list name, adding them to the existing or new list.
-     * Updates the ExpensesManager and returns the up-to-date list.
-     *
-     * @param listName The name of the list to import into.
-     * @return The updated ExpenseList.
-     */
-    /*public ExpenseList importExpensesAndAddToList(String listName) {
-        // Ensure the list name has the .txt extension for import
-        String fileName = listName;
-        if (!fileName.toLowerCase().endsWith(".txt")) {
-            fileName += ".txt";
-        }
-        // Import the expenses from file
-        List<Expense> importedExpenses = importExpensesNew(fileName);
-
-        // Remove .txt for the internal list name (so you don't store the name with extension in memory)
-        String listKey = listName.replaceFirst("\\.txt$", "");
-
-        // Get or create the expense list
-        ExpenseList expenseList = ExpensesManager.expensesList.getExpenseList(listKey);
-        if (expenseList == null) {
-            expenseList = new ExpenseList();
-            ExpensesManager.expensesList.addExpenseList(listKey, expenseList);
-        } else {
-
-            expenseList.getExpenses().clear();
-        }
-
-        // Add all imported expenses (now always to a cleared list)
-        for (Expense expense : importedExpenses) {
-            expenseList.addExpense(expense);
-        }
-
-        // Save the updated list back to the manager
-        ExpensesManager.expensesList.addExpenseList(listKey, expenseList);
-
-        // Return the updated list (for display, etc.)
-        return expenseList;
-    }*/
 }

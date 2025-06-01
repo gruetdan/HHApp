@@ -29,7 +29,6 @@ public class ExpensesList {
         this.expensesList = new HashMap<>();
     }
 
-    //todo: Folgende Funktion ist auch in ExpensesManager vorhanden.
     /**
      * Retrieves an ExpenseList by its identifier.
      *

@@ -48,18 +48,5 @@ public class ExpenseList {
         expenses.add(expense);
     }
 
-    /*public ExpenseList importExpensesFromFile(String fileName) {
-        Path filePath = Paths.get(ExpensesManager.getDirectoryPath(), fileName);
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath.toFile()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                ExpensesManager.expensesList.getExpenseList(fileName.replaceFirst("\\.txt$", "")).addExpense(Expense.fromCsvString(line));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return this;
-    }*/
-
 
 }

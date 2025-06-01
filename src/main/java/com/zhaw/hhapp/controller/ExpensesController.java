@@ -4,17 +4,16 @@ import com.zhaw.hhapp.manager.ExpenseManager;
 import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.model.ExpenseList;
-import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.service.ExpensesService;
-import com.zhaw.hhapp.service.WindowManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Controller for the ExpensesView.fxml, handling user interactions for managing multiple expense lists.
@@ -82,20 +81,7 @@ public class ExpensesController {
         if (ExpensesManager.expensesList.getExpenseList(listName) == null) {
             // Not in memory: Does a corresponding file exist?
             ExpensesManager.expensesList.addExpenseList(listName);
-            java.io.File listFile = new java.io.File(ExpensesManager.getDirectoryPath(), listName + ".txt");
-            /*if (listFile.exists()) {
-                // File exists: Import the list and register it in the manager/model
-                new ExpenseService().importExpensesAndAddToList(listName);
-                System.out.println("Imported existing list: " + listName);
-            } else {
-                // Truly new: create the list via the service
-                boolean created = expensesService.addExpenseList(listName);
-                if (!created) {
-                    showInfoDialog("Error: Invalid name or list already exists!");
-                    return;
-                }
-                System.out.println("Created new list: " + listName);
-            }*/
+            //java.io.File listFile = new java.io.File(ExpensesManager.getDirectoryPath(), listName + ".txt");
         } else {
             // List is already in memory
             System.out.println("List exists in memory: " + listName);
@@ -121,7 +107,7 @@ public class ExpensesController {
         // Add a listener to update the ListView when the scene becomes available
         expenseListTextField.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
-                expensesService.updateListView(ExpensesManager.expensesList.keySet(), expensesListView, addExpenseListButton);
+                updateListView(ExpensesManager.expensesList.keySet(), expensesListView);
             }
         });
 
@@ -170,6 +156,7 @@ public class ExpensesController {
         // Show the sum in a dialog window
         showSumDialog(selectedListName, sum);
     }
+
     /**
      * Displays the sum dialog window for a specific expense list.
      *
@@ -199,17 +186,32 @@ public class ExpensesController {
 
     /**
      * Loads all existing expense lists from file into the model at startup.
-     * <p>
      * This ensures all lists are available for operations like summing, even if not yet edited.
      */
     private void loadAllExpenseLists() {
         // Delete the entries in the list to reload for each window-opening / coming back to it
         expensesListView.getItems().clear();
 
-        // Show the file names in the List (and force GUI to refresh)
-        expensesListView.getItems().addAll(ExpensesManager.expensesList.keySet());
+        // Show the file names in the List if they are not empty (and force GUI to refresh)
+        for (String i : ExpensesManager.expensesList.keySet()) {
+            if (!ExpensesManager.expensesList.getExpenseList(i).getExpenses().isEmpty()) {
+                expensesListView.getItems().add(i.toString());
+            }
+        }
         expensesListView.refresh();
     }
 
+    /**
+     * Loads list items into a list view
+     *
+     * @param list     items to display
+     * @param listView to which the list of expenses should be loaded
+     */
+    public void updateListView(Set<String> list, ListView<String> listView) {
+        listView.getItems().clear();
 
+        for (String i : list) {
+            listView.getItems().add(i.toString());
+        }
+    }
 }

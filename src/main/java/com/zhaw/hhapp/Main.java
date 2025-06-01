@@ -1,8 +1,7 @@
 package com.zhaw.hhapp;
 
 import com.zhaw.hhapp.manager.ExpensesManager;
-import com.zhaw.hhapp.service.ExpensesService;
-import com.zhaw.hhapp.service.WindowManager;
+import com.zhaw.hhapp.controller.WindowManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

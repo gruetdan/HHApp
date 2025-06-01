@@ -4,18 +4,12 @@ import com.zhaw.hhapp.manager.ExpensesManager;
 import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpenseService;
 import com.zhaw.hhapp.model.Expense;
-import com.zhaw.hhapp.service.ExpensesService;
-import com.zhaw.hhapp.service.WindowManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -69,19 +63,15 @@ public class ExpenseController {
         // System.out.println("[Controller] Initializing with windowTitle: " + getWindowTitle());
         resetFields();
         Platform.runLater(() -> {
-            try {
-                importExpenses();
-            } catch (Exception e) {
-                System.out.println("[Controller] No list yet: " + ExpensesManager.getDirectoryPath());
-            }
+            importExpenses();
             if (exportToTXT.getScene() != null) {
                 Stage stage = (Stage) exportToTXT.getScene().getWindow();
                 stage.setOnCloseRequest(event -> {
                             exportCurrentList();
-                            //ExpensesService.showMainStage();
+                            //Go back to previously saved window/controller of ExpensesList
                             ExpensesController mainController = WindowManager.getMainController();
                             if (mainController != null) {
-                                System.out.println("Reinitializing MainController...");
+                                //System.out.println("Reinitializing MainController...");
                                 mainController.initialize();
                             } else {
                                 System.err.println("MainController not found!");
@@ -94,9 +84,6 @@ public class ExpenseController {
         });
     }
 
-
-    //todo: Prüfen ob Listen-Titel mit bestehender Liste übereinstimmt. Falls ja, dann direkt importieren
-    // IN MAIN WERDEN NEU ALLE LISTEN ZU BEGINN IMPORTIERT
     /**
      * Resets all input fields to default values.
      */
@@ -130,7 +117,7 @@ public class ExpenseController {
             String title = getWindowTitle();
             expenseService.addExpense(title, expense);
             ExpenseList updatedList = expenseService.getExpenseList(title);
-            updateExpenseListView(updatedList, expenseListView, exportToTXT);
+            updateExpenseListView(updatedList, expenseListView);
 
             resetFields();
 
@@ -144,17 +131,13 @@ public class ExpenseController {
      *
      * @param expenseList The ExpenseList to display.
      * @param listView    The ListView to update.
-     * @param refButton   Reference button for window context (could be avoided).
      */
-    private void updateExpenseListView(ExpenseList expenseList, ListView<String> listView, Button refButton) {
+    private void updateExpenseListView(ExpenseList expenseList, ListView<String> listView) {
         listView.getItems().clear();
-        Stage stage = (Stage) refButton.getScene().getWindow();
-        String title = stage.getTitle();
         for (Expense expense : expenseList.getExpenses()) {
             listView.getItems().add(expense.toString());
         }
     }
-
 
     /**
      * Handles export action to save the current expense list as a TXT file.
@@ -173,11 +156,10 @@ public class ExpenseController {
     private void importExpenses() {
         try {
             String title = getWindowTitle();
-            //ExpenseList expenseList = expenseService.importExpensesAndAddToList(title);
-            updateExpenseListView(ExpensesManager.expensesList.getExpenseList(title), expenseListView, exportToTXT);
+            updateExpenseListView(ExpensesManager.expensesList.getExpenseList(title), expenseListView);
             expenseListView.refresh();
         } catch (Exception e) {
-            //showErrorDialog("Fehler beim Import: Stimmt der Listenname mit der Datei überein?");
+            System.out.println("[Controller] No list yet: " + ExpensesManager.getDirectoryPath());
         }
     }
 
@@ -215,7 +197,7 @@ public class ExpenseController {
     private void exportCurrentList() {
         String listName = getWindowTitle();
         ExpenseList list = expenseService.getExpenseList(listName);
-        if (list != null && !list.getExpenses().isEmpty()) {
+        if (list != null && !list.getExpenses().isEmpty())  {
             try {
                 expenseService.exportExpensesToTxt(listName);
             } catch (Exception e) {

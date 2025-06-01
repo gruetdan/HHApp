@@ -1,14 +1,6 @@
-package com.zhaw.hhapp.service;
+package com.zhaw.hhapp.controller;
 
-import com.zhaw.hhapp.controller.ExpenseController;
-import com.zhaw.hhapp.controller.ExpensesController;
-import com.zhaw.hhapp.model.Expense;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 /**
  * Ensures that we have one single main Window (ExpensesView).
@@ -24,7 +16,6 @@ public class WindowManager {
 
     /**
      * Sets the main Stage
-     *
      * @param stage Main Stage of ExpensesView.
      */
     public static void setMainStage(Stage stage) {
@@ -32,17 +23,7 @@ public class WindowManager {
     }
 
     /**
-     * Returns main stage of ExpensesView
-     *
-     * @return mainStage Main Stage of ExpensesView
-     */
-    public static Stage getMainStage() {
-        return mainStage;
-    }
-
-    /**
      * Sets the Controller for ExpensesView
-     *
      * @param controller Controller of ExpensesView.
      */
     public static void setMainController(ExpensesController controller) {
@@ -51,7 +32,6 @@ public class WindowManager {
 
     /**
      * Returns controller of ExpensesView
-     *
      * @return mainController Controller of ExpensesView
      */
     public static ExpensesController getMainController() {
