@@ -1,22 +1,10 @@
 package com.zhaw.hhapp.service;
 
-import com.zhaw.hhapp.controller.ExpenseController;
-import com.zhaw.hhapp.controller.ExpensesController;
 import com.zhaw.hhapp.manager.ExpensesManager;
+import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.model.ExpenseList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.stage.Stage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Service class for business logic related to expenses lists.
@@ -35,6 +23,31 @@ public class ExpensesService {
      */
     public ExpenseList getExpenseList(String listName) {
         return ExpensesManager.expensesList.getExpenseList(listName);
+    }
+
+
+    public StringBuilder getMessage(ExpenseList expenseList, double sum) {
+        Map<String, Double> sumPerUser = calculateSumPerUser(expenseList);
+        // formatted result message
+        StringBuilder message = new StringBuilder();
+        message.append(String.format("Total sum of expenses: %.2f CHF\n", sum));
+
+        if (sumPerUser.size() > 1) {
+            message.append("\nBy user:\n");
+            for (Map.Entry<String, Double> entry : sumPerUser.entrySet()) {
+                message.append(String.format("- %s: %.2f CHF\n", entry.getKey(), entry.getValue()));
+            }
+        }
+        return message;
+    }
+
+    public Map<String, Double> calculateSumPerUser(ExpenseList expenseList) {
+        Map<String, Double> sumPerUser = new HashMap<>();
+        for (Expense expense : expenseList.getExpenses()) {
+            String user = expense.getUserName();
+            sumPerUser.put(user, sumPerUser.getOrDefault(user, 0.0) + expense.getAmount());
+        }
+        return sumPerUser;
     }
 
 }
