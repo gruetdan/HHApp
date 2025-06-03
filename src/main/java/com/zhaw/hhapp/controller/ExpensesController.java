@@ -11,8 +11,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -153,21 +154,47 @@ public class ExpensesController {
                 .mapToDouble(Expense::getAmount)
                 .sum();
 
+        //Calculate sum per user in the selected list
+        StringBuilder message = getMessage(expenseList, sum);
         // Show the sum in a dialog window
-        showSumDialog(selectedListName, sum);
+        showSumDialog(selectedListName, message.toString());
+    }
+
+    private static StringBuilder getMessage(ExpenseList expenseList, double sum) {
+        Map<String, Double> sumPerUser = getSumPerUser(expenseList);
+        // formatted result message
+        StringBuilder message = new StringBuilder();
+        message.append(String.format("Total sum of expenses: %.2f CHF\n", sum));
+
+        if (sumPerUser.size() > 1) {
+            message.append("\nBy user:\n");
+            for (Map.Entry<String, Double> entry : sumPerUser.entrySet()) {
+                message.append(String.format("- %s: %.2f CHF\n", entry.getKey(), entry.getValue()));
+            }
+        }
+        return message;
+    }
+
+    private static Map<String, Double> getSumPerUser(ExpenseList expenseList) {
+        Map<String, Double> sumPerUser = new HashMap<>();
+        for (Expense expense : expenseList.getExpenses()) {
+            String user = expense.getUserName();
+            sumPerUser.put(user, sumPerUser.getOrDefault(user, 0.0) + expense.getAmount());
+        }
+        return sumPerUser;
     }
 
     /**
      * Displays the sum dialog window for a specific expense list.
      *
      * @param listName The name of the expense list.
-     * @param sum      The calculated sum to display.
+     * @param message      The calculated sum to display.
      */
-    public static void showSumDialog(String listName, double sum) {
+    public static void showSumDialog(String listName, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Sum of expenses");
         alert.setHeaderText("List: " + listName);
-        alert.setContentText(String.format("Total sum of expenses: %.2f CHF", sum));
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
