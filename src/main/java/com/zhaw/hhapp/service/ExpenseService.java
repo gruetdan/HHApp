@@ -63,7 +63,7 @@ public class ExpenseService {
      */
     public String validateExpense(Expense expense) {
         double amount = expense.getAmount();
-        if (amount <= 0 || Double.isInfinite(amount) || Double.isNaN(amount)) {
+        if (amount <= 0.04 || Double.isInfinite(amount) || Double.isNaN(amount)) {
             return "Please enter a positive, valid amount greater than 0!";
         }
         if (expense.getDescription() == null || expense.getDescription().trim().isEmpty()) {
