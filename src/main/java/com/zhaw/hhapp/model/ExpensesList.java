@@ -53,7 +53,7 @@ public class ExpensesList {
     }
 
     /**
-     * Adds a new, empty ExpenseList with the given ID.
+     * Adds a new, empty ExpenseList with by the list name (ID).
      * If a list with the same ID exists, it will be overwritten!
      * Existence checks are handled externally.
      * @param expenseListID The identifier for the new expense list.
@@ -65,5 +65,13 @@ public class ExpensesList {
     // Method to retrieve all keys (expense list IDs)
     public Set<String> keySet() {
         return expensesList.keySet();
+    }
+
+    /**
+     * Deletes an ExpenseList out of Expenses List by the list name (ID).
+     * @param  expenseListID The identifier / name of the existing List
+     */
+    public void deleteExpensesList(String expenseListID){
+        expensesList.remove(expenseListID);
     }
 }

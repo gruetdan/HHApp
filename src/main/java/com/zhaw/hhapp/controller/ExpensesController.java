@@ -11,6 +11,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,16 +39,25 @@ public class ExpensesController {
     private Button showSumButton;
 
     /**
+     * Button to delete an ExpensesList.
+     */
+    @FXML
+    private Button deleteExpensesListButton;
+
+
+    /**
      * TextField for entering the name of a new or existing expense list.
      */
     @FXML
     private TextField expenseListTextField;
+
 
     /**
      * ListView to display the names of all existing expense lists.
      */
     @FXML
     private ListView<String> expensesListView;
+
 
     /**
      * Service instance to handle business logic for expense lists.
@@ -82,7 +94,7 @@ public class ExpensesController {
             //java.io.File listFile = new java.io.File(ExpensesManager.getDirectoryPath(), listName + ".txt");
         } else {
             // List is already in memory
-            System.out.println("List exists in memory: " + listName);
+            //System.out.println("List exists in memory: " + listName);
         }
 
         // Open the ExpenseManager window for this list (either existing or newly created)
@@ -155,6 +167,28 @@ public class ExpensesController {
         StringBuilder message = expensesService.getMessage(expenseList, sum);
         // Show the sum in a dialog window
         showSumDialog(selectedListName, message.toString());
+    }
+
+    /**
+     * Handle suppression of an Expenses List.
+     */
+    @FXML
+    void handleDeleteExpensesList() {
+        // Get the selected list name from the ListView
+        String selectedListName = expensesListView.getSelectionModel().getSelectedItem();
+
+        if (selectedListName == null) {
+            showInfoDialog("Please select an expense list first.");
+            return;
+        }
+
+        ExpensesManager.expensesList.deleteExpensesList(selectedListName);
+
+        loadAllExpenseLists();
+
+        expenseListTextField.clear();
+
+        ExpensesManager.removeExpenseList(selectedListName);
     }
 
     /**

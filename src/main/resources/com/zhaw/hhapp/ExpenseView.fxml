@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefWidth="400" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.controller.ExpenseController">
+<VBox alignment="CENTER" prefHeight="522.0" prefWidth="259.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.controller.ExpenseController">
 
-   <Label text="Anount:" />
-   <TextField fx:id="amountField" promptText="Anount (CHF)" />
+   <Label text="Anount:">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin></Label>
+   <TextField fx:id="amountField" prefHeight="25.0" prefWidth="125.0" promptText="Anount (CHF)" />
 
-   <Label text="Description:" />
+   <Label text="Description:">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin></Label>
    <TextField fx:id="descriptionField" promptText="Description" />
 
-   <Label text="Date:" />
+   <Label text="Date:">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin></Label>
    <TextField fx:id="dateField" promptText="Date dd.MM.yyyy (default today)" />
 
-   <Label text="User:" />
+   <Label text="User:">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin></Label>
    <TextField fx:id="userField" promptText="User (default systeminformation)" />
 
-   <Button fx:id="addExpenseButton" onMouseClicked="#handleAddExpense" text="add expense" />
-   <Button fx:id="exportToTXT" mnemonicParsing="false" onMouseClicked="#exportToTxt" text="export list to file(.txt)" />
-   <ListView fx:id="expenseListView" prefHeight="200" />
+   <Button fx:id="addExpenseButton" onMouseClicked="#handleAddExpense" text="add expense">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin></Button>
+   <Button fx:id="exportToTXT" mnemonicParsing="false" onMouseClicked="#exportToTxt" text="export list to file(.txt)">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin></Button>
+   <Label text="Expenses:">
+      <VBox.margin>
+         <Insets top="10.0" />
+      </VBox.margin>
+   </Label>
+   <ListView fx:id="expenseListView" prefHeight="225.0" prefWidth="239.0" />
+   <Button fx:id="deleteExpenseButton" onMouseClicked="#handleDeleteExpense" text="delete expense">
+      <VBox.margin>
+         <Insets top="5.0" />
+      </VBox.margin>
+   </Button>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </VBox>

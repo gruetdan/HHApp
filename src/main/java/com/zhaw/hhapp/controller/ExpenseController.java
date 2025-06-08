@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 
 import static java.lang.Double.parseDouble;
 
@@ -35,6 +36,12 @@ public class ExpenseController {
      */
     @FXML
     private Button exportToTXT, addExpenseButton, importFromTxt;
+
+    /**
+     * Buttons to delete expense.
+     */
+    @FXML
+    private Button deleteExpenseButton;
 
     /**
      * ListView for displaying all expenses in the current list.
@@ -151,6 +158,48 @@ public class ExpenseController {
     }
 
     /**
+     * Handle suppression of an expense.
+     */
+    @FXML
+    void handleDeleteExpense() {
+        // Get name of the expense list
+        String expenseListID = getWindowTitle();
+
+        // Get the selected list name from the ListView
+        String selectedExpense = expenseListView.getSelectionModel().getSelectedItem();
+        if (selectedExpense == null) {
+            showInfoDialog("Please select an expense first.");
+            return;
+        }
+
+        // Get the selected list from the list name
+        ExpenseList expenseList = expenseService.getExpenseList(expenseListID);
+
+        // Iterate over the expenses of the list and delete an expense if matching with the selected one
+        Iterator<Expense> iterator = expenseList.iterator();
+        while(iterator.hasNext()){
+           Expense expense = iterator.next();
+           String expenseString = expense.toString();
+           if (expenseString.equals(selectedExpense)) {
+               iterator.remove();
+               System.out.println("Expense deleted: " + selectedExpense);
+           }
+        }
+
+        // Prevent the list to be empty (leads to problems, as not foreseen by generel implementation concept)
+        if(expenseList.size()==0){
+            showInfoDialog("A list cannot be empty. Add an expense or delete the entire list.");
+        }
+
+        // update UI
+        updateExpenseListView(expenseList,expenseListView);
+
+        // update memory (expensesList)
+        ExpensesManager.expensesList.addExpenseList(expenseListID,expenseList);
+
+    }
+
+    /**
      * Imports existing expenses from file into the current list and updates the view.
      */
     private void importExpenses() {
@@ -204,6 +253,19 @@ public class ExpenseController {
                 showErrorDialog("Export failed!");
             }
         }
+    }
+
+    /**
+     * Shows an information dialog to the user.
+     *
+     * @param message The message to display.
+     */
+    public static void showInfoDialog(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

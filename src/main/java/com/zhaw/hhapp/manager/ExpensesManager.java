@@ -6,6 +6,10 @@ import com.zhaw.hhapp.model.ExpenseList;
 import com.zhaw.hhapp.service.ExpenseService;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,6 +101,25 @@ public class ExpensesManager {
 
         // Return the updated list (for display, etc.)
         return expenseList;
+    }
+
+    public static void removeExpenseList(String listName){
+        // Ensure the list name has the .txt extension for import
+        String fileName = listName;
+        if (!fileName.toLowerCase().endsWith(".txt")) {
+            fileName += ".txt";
+        }
+
+        Path filePath = Paths.get(directoryPath, fileName);
+        try {
+            Files.delete(filePath);
+            System.out.println("File "+fileName+" deleted successfully.");
+        } catch (IOException e) {
+            System.out.println("Failed to delete the file: " + fileName);
+            System.out.println(e.getMessage());
+        }
+
+
     }
 }
 

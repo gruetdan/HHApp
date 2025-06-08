@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  * Provides methods to add and retrieve expenses.
  * </p>
  */
-public class ExpenseList {
+public class ExpenseList implements Iterable<Expense>{
     /**
      * Internal list of expenses for this ExpenseList.
      */
@@ -48,5 +49,17 @@ public class ExpenseList {
         expenses.add(expense);
     }
 
+    public void removeExpense(Expense expense) {
+        expenses.remove(expense);
+    }
 
+    // Get an iterator
+    @Override
+    public Iterator<Expense> iterator() {
+        return expenses.iterator();
+    }
+
+    public int size(){
+        return expenses.size();
+    }
 }
