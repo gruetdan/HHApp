@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Records</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Expense Records</h1>
+    <div class="button-container">
+        <button id="addRow">Add Row</button>
+        <button id="editRow">Edit Row</button>
+        <button id="deleteRow">Delete Row</button>
+        <button id="saveBtn">Save</button>  <!-- New Save Button -->
+    </div>
+    <table id="expenseTable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>AMOUNT</th>
+            <th>DATE</th>
+            <th>DESCRIPTION</th>
+            <th>SOURCE</th>
+            <th>USER_NAME</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Rows will be dynamically generated here -->
+        </tbody>
+    </table>
+</div>
+<!-- Reference to the external JavaScript file -->
+<script src="js/script.js"></script>
+</body>
+</html>
