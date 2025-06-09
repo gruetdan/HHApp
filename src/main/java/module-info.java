@@ -29,5 +29,7 @@ module com.example.hhapp {
     exports com.zhaw.hhapp.controller;
     exports com.zhaw.hhapp.service;
     exports com.zhaw.hhapp.manager;
+    exports com.zhaw.hhapp.dataLoader;
+    opens com.zhaw.hhapp.dataLoader to spring.beans, spring.boot, spring.boot.autoconfigure, spring.context, spring.core;
 
 }

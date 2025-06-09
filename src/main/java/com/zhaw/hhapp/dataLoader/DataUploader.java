@@ -1,4 +1,4 @@
-package com.zhaw.hhapp;
+package com.zhaw.hhapp.dataLoader;
 
 import com.zhaw.hhapp.model.Expense;
 import com.zhaw.hhapp.repository.ExpenseRepository;
@@ -11,23 +11,25 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Class to upload the data in .txt-files in folder ExpenseLists to h2-console
+ */
 @Component
-public class DataLoader implements CommandLineRunner {
+public class DataUploader implements CommandLineRunner {
     private final ExpenseRepository expenseRepository;
 
-    public DataLoader(ExpenseRepository expenseRepository) {
+    public DataUploader(ExpenseRepository expenseRepository) {
         this.expenseRepository = expenseRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        // Import erfolgt nur, wenn in der DB noch keine Daten vorhanden sind.
+        // Import if, no data in DB yet.
         if (expenseRepository.count() != 0) {
             System.out.println("ℹ️ Bestehende Daten gefunden – Datei-Import wird übersprungen.");
             return;
         }
-
-        // Suche alle .txt-Dateien im Ordner "ExpenseLists" (auf gleicher Ebene wie das Projektverzeichnis).
+        // Look for all .txt-files in the folder "ExpenseLists".
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("file:ExpenseLists/*.txt");
 
@@ -37,10 +39,10 @@ public class DataLoader implements CommandLineRunner {
         }
 
         int totalCount = 0;
-        // Für jede gefundene Datei:
+        // For each file found:
         for (Resource resource : resources) {
             String fileName = resource.getFilename();
-            // Entferne die Endung ".txt" (nur, wenn vorhanden)
+            // Remove ending ".txt"
             String fileSource = fileName;
             int dotIndex = fileName.lastIndexOf(".");
             if (dotIndex > 0) {
@@ -52,14 +54,14 @@ public class DataLoader implements CommandLineRunner {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    // Leere Zeilen oder potenzielle Header überspringen.
+                    // Skip empty row (or header)
                     if (line.trim().isEmpty() || line.toLowerCase().contains("amount|description")) {
                         continue;
                     }
-                    // Zerlegen der Zeile in vier Teile anhand des Pipe-Zeichens.
+                    // Discompose row in four parts by the Pipe-Sign.
                     String[] parts = line.split("\\|", 4);
                     if (parts.length < 4) {
-                        System.err.println("Ungültiges Format in Datei " + fileName + ": " + line);
+                        System.err.println("Format of the entries in file " + fileName + ": " + line+" not valid.");
                         continue;
                     }
                     try {
@@ -69,19 +71,19 @@ public class DataLoader implements CommandLineRunner {
                         String userName = parts[3].trim();
 
                         Expense expense = new Expense(amount, description, date, userName);
-                        // Setze das zusätzliche Feld "source" auf den Dateinamen ohne Endung:
+                        // Set the new field "source" as filename (without Ending):
                         expense.setSource(fileSource);
                         //System.out.println("Datei: " + fileName + " -> source: " + fileSource);
                         expenseRepository.save(expense);
                         totalCount++;
                     } catch (NumberFormatException e) {
-                        System.err.println("Fehler beim Parsen der Zahl in Datei " + fileName + ": " + line);
+                        System.err.println("Error at parsing number in file " + fileName + ": " + line);
                     }
                 }
             } catch (Exception e) {
-                System.err.println("Fehler beim Laden der Datei " + fileName + ": " + e.getMessage());
+                System.err.println("Error during loading of file " + fileName + ": " + e.getMessage());
             }
         }
-        System.out.println("✅ " + totalCount + " Ausgaben aus den .txt-Dateien in ExpenseLists importiert.");
+        System.out.println("✅ " + totalCount + " Expenses imported from .txt file to ExpenseLists.");
     }
 }
