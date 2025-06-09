@@ -1,4 +1,4 @@
-module com.example.hhappstructuretest {
+module com.example.hhapp {
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -6,14 +6,28 @@ module com.example.hhappstructuretest {
     requires jdk.compiler;
     requires java.desktop;
 
-    opens com.zhaw.hhapp to javafx.fxml;
+    requires spring.boot;
+    requires spring.boot.autoconfigure;
+    requires spring.context;
+    requires spring.beans;
+    requires spring.core;
+    requires spring.web;
+    requires spring.webmvc;
+    requires spring.data.jpa;
+    requires jakarta.persistence;
+    requires java.sql;
+
+    // Spring braucht Zugriff auf diese Packages:
+    opens com.zhaw.hhapp to spring.core, spring.beans, spring.context, spring.boot, spring.boot.autoconfigure;
+    opens com.zhaw.hhapp.model to spring.core, spring.beans, spring.context, javafx.fxml, org.hibernate.orm.deprecation;
+    opens com.zhaw.hhapp.controller to javafx.fxml;
+    opens com.zhaw.hhapp.service to javafx.fxml;
+    opens com.zhaw.hhapp.manager to javafx.fxml;
+
     exports com.zhaw.hhapp;
     exports com.zhaw.hhapp.model;
-    opens com.zhaw.hhapp.model to javafx.fxml;
     exports com.zhaw.hhapp.controller;
-    opens com.zhaw.hhapp.controller to javafx.fxml;
     exports com.zhaw.hhapp.service;
-    opens com.zhaw.hhapp.service to javafx.fxml;
     exports com.zhaw.hhapp.manager;
-    opens com.zhaw.hhapp.manager to javafx.fxml;
+
 }
