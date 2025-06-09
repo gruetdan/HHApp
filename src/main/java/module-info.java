@@ -19,7 +19,7 @@ module com.example.hhapp {
 
     // Spring braucht Zugriff auf diese Packages:
     opens com.zhaw.hhapp to spring.core, spring.beans, spring.context, spring.boot, spring.boot.autoconfigure;
-    opens com.zhaw.hhapp.model to spring.core, spring.beans, spring.context, javafx.fxml, org.hibernate.orm.deprecation;
+    opens com.zhaw.hhapp.model to spring.core, spring.beans, spring.context, javafx.fxml;
     opens com.zhaw.hhapp.controller to javafx.fxml;
     opens com.zhaw.hhapp.service to javafx.fxml;
     opens com.zhaw.hhapp.manager to javafx.fxml;
