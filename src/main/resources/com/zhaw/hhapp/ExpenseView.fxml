@@ -9,7 +9,7 @@
 
 <VBox alignment="CENTER" prefHeight="522.0" prefWidth="259.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhaw.hhapp.controller.ExpenseController">
 
-   <Label text="Anount:">
+   <Label text="Amount:">
       <VBox.margin>
          <Insets top="5.0" />
       </VBox.margin></Label>
