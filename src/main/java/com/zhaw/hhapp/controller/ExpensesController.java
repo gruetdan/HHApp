@@ -115,7 +115,8 @@ public class ExpensesController {
         // List the file names in ExpensesManager.getDirectoryPath()
         loadAllExpenseLists();
         // Add a listener to update the ListView when the scene becomes available
-        expenseListTextField.sceneProperty().addListener((obs, oldScene, newScene) -> {
+        expenseListTextField.sceneProperty().addListener(
+                (obs, oldScene, newScene) -> {
             if (newScene != null) {
                 updateListView(ExpensesManager.expensesList.keySet(), expensesListView);
             }
