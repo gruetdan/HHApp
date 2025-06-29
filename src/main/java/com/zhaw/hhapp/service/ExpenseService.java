@@ -80,7 +80,7 @@ public class ExpenseService {
      * @param fileName The file to import from (should end with .txt).
      * @return A list of imported Expense objects.
      */
-    public List<Expense> importExpensesNew(String fileName) {
+    public List<Expense> importExpenses(String fileName) {
         // Always ensure only one .txt extension
         fileName = fileName.replaceFirst("\\.txt$", "");
         fileName += ".txt";

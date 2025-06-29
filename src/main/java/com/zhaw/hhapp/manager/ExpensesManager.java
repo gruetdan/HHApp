@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -79,7 +78,7 @@ public class ExpensesManager {
             fileName += ".txt";
         }
         // Import the expenses from file
-        List<Expense> importedExpenses = new ExpenseService().importExpensesNew(fileName);
+        List<Expense> importedExpenses = new ExpenseService().importExpenses(fileName);
 
         // Remove .txt for the internal list name (so you don't store the name with extension in memory)
         String listKey = listName.replaceFirst("\\.txt$", "");

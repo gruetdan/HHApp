@@ -11,9 +11,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -87,16 +84,10 @@ public class ExpensesController {
         }
 
         // Check if the list already exists in memory
-        //ExpenseList loadedList = expensesService.getExpenseList(listName);
         if (ExpensesManager.expensesList.getExpenseList(listName) == null) {
             // Not in memory: Does a corresponding file exist?
             ExpensesManager.expensesList.addExpenseList(listName);
-            //java.io.File listFile = new java.io.File(ExpensesManager.getDirectoryPath(), listName + ".txt");
-        } else {
-            // List is already in memory
-            //System.out.println("List exists in memory: " + listName);
         }
-
         // Open the ExpenseManager window for this list (either existing or newly created)
         new ExpenseManager(listName);
         // Clear the input field to provide UI feedback
