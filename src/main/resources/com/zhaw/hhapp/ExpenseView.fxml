@@ -13,7 +13,7 @@
       <VBox.margin>
          <Insets top="5.0" />
       </VBox.margin></Label>
-   <TextField fx:id="amountField" prefHeight="25.0" prefWidth="125.0" promptText="Anount (CHF)" />
+   <TextField fx:id="amountField" prefHeight="25.0" prefWidth="125.0" promptText="Amount (CHF)" />
 
    <Label text="Description:">
       <VBox.margin>
