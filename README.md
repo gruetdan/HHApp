@@ -40,7 +40,7 @@ The goal was to build a locally runnable, extensible, and privacy-friendly solut
 
 ### Setup the Project
 #### Step 1: Clone the Repository
-```bash
+```
 git clone https://github.com/gruetdan/HHApp.git
 cd HHApp-DG2_AA1
 ```
@@ -81,7 +81,7 @@ com.example.hhapp/com.zhaw.hhapp.service=ALL-UNNAMED
 #### Step 4: Run Tests
 
 Execute unit tests in
-``` bash
+``` 
 src/test/java
 ```
 
