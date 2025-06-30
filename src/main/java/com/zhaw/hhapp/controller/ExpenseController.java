@@ -66,8 +66,6 @@ public class ExpenseController {
      */
     @FXML
     public void initialize() {
-        // debug:
-        // System.out.println("[Controller] Initializing with windowTitle: " + getWindowTitle());
         resetFields();
         Platform.runLater(() -> {
             importExpenses();
@@ -78,7 +76,6 @@ public class ExpenseController {
                             //Go back to previously saved window/controller of ExpensesList
                             ExpensesController mainController = WindowManager.getMainController();
                             if (mainController != null) {
-                                //System.out.println("Reinitializing MainController...");
                                 mainController.initialize();
                             } else {
                                 System.err.println("MainController not found!");
